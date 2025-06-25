@@ -1,0 +1,52 @@
+.mainBox{
+    margin-top: 50px;
+    position: relative;
+    background-color: lightcoral;
+    width: 50%;
+    height: 500px;
+    z-index: -999;
+}
+
+.rect1{
+    width: 200px;
+    height: 200px;
+    background-color: lightblue;
+    color: black;
+    position: absolute;
+    top: 20%;
+    left: 20%;
+
+    display: flex;
+    align-items: center;
+    }
+
+.rect2{
+    width: 200px;
+    height: 200px;
+    background-color: lightgreen;
+    color: black;
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    z-index: 2;
+
+    display: flex;
+    justify-content: center;
+}
+
+.rect3{
+    width: 200px;
+    height: 200px;
+    background-color: lightsalmon;
+    color: black;
+    position: absolute;
+    top: 40%;
+    left: 40%;
+    z-index: 1;
+    text-align: end;
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding: 10px;
+}   
