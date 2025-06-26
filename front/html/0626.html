@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/0626.css">
+</head>
+<body>
+    <ul>
+        <li>리스트1</li>
+        <li>리스트2</li>
+        <li>리스트3</li>
+    </ul>
+<hr>
+    <table class="table1">
+        <tr>
+            <td>1열</td>
+            <!-- 1행의 경우 th를 사용해 굵은 글자를 보통 사용 -->
+            <!-- 열추가 -->
+            <td>2열</td>
+            <td>3열</td>
+        </tr>
+        <tr>
+            <!-- 행추가 -->
+            <td>2행</td>
+            <td>2열</td>
+            <td>3열</td>
+        </tr>
+    </table>
+    <hr>
+    <div class="text1">중복 가능한 class<br>
+        css 선택자는 .
+    </div>
+    <br>
+    <div id="text2">고유한 id
+        css 선택자는 #
+        엔터 줄바꿈은 "white-space: pre-line;"
+    </div>
+    <hr>
+    <section class="bigBox">
+        <div class="littleBox1"></div>
+        <div class="littleBox2"></div>
+    </section>
+    <hr>
+    <a href="https://www.google.com" target="_blank" title="구글로 이동">링크?</a>
+    <br>
+    <a href="./0626.html" download title="해당 페이지 html 다운로드">다운로드</a>
+    <!-- href에 파일의 위치를 지정하고 "download" 속성을 이용해 파일 다운로드 가능 -->
+    <hr>
+    <button onclick="alert('딸깍')" class="button1">클릭</button>
+    <br>
+    <div class="hello" onclick="sayHello()">인사하기</div>
+
+    <script>
+        function sayHello(){
+            alert('안녕~');
+        }
+    </script>
+    <hr>
+    <div class="move">>>></div>
+    <hr>
+    <table class="container">
+        <tr >
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>click</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+    <hr>
+    <section class="shape">
+    <div></div>
+    <div>hover</div>
+    <div>hover</div>
+    </section>
+</body>
+</html>

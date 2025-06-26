@@ -1,0 +1,184 @@
+.text1{
+    border: 1px solid black ;    
+}
+
+#text2{
+    color: lightcoral;
+    white-space: pre-line;
+}
+
+.bigBox{
+    border: 1px solid black;
+    width: 400px;
+    height: 100px;
+    z-index: -999;
+    position: relative;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    /* flex-wrap: wrap; */
+}
+
+.littleBox1{
+    width: 80px;
+    height: 80px;
+    background-color: lightsalmon;
+    position: relative;
+    justify-content: center;
+}
+.littleBox2{
+    width: 80px;
+    height: 80px;
+    background-color: lightgreen;
+    position: relative;
+    margin-left: 10px;
+}
+
+.table1{
+    border: 1px solid black;
+}
+
+.table1 td{
+    border: 1px solid black;
+}
+.table1 tr:nth-child(1){
+    color: brown;
+}
+/* 테이블의 첫번쨰 tr 선택자 */
+
+.table1 tr :first-child{
+    font-weight: 600;
+}
+/* 테이블의 모든 tr의 첫번째 선택자 */
+
+ul {
+    list-style-type: circle;
+    /* list-style-type: disc; */
+    /* list-style-type: square; */
+    /* list-style-type: none; */
+}
+
+.button1:hover{
+    color: blue;
+    scale: 1.2;
+}
+.hello:hover{
+    transform: translateX(10px);
+    color: red;
+    animation: ease-in;
+}
+
+@keyframes moveSlow {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(20px);
+    }
+}
+.move:hover {
+    animation-name: moveSlow;
+    animation-duration: 2s;
+}
+
+.container {
+    display: flex;
+}
+.container tr td {
+    height: 50px;
+    width: 50px;
+    background-color: lightcoral;
+}
+.container tr td:hover {
+    background-color: lightcyan;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+        background-color: lightcoral;
+    }
+}
+.container tr td:active{
+    animation-name: fadeIn;
+    animation-duration: 1s;
+}
+.container :nth-child(2) :nth-child(2) {
+    color: white;
+    text-align: center;
+}
+.container :nth-child(2) :nth-child(2):active {
+    color: black;
+}
+
+.shape {
+    display: flex;
+}
+.shape > :not(:first-child) {
+    margin-left: 20px;
+}
+.shape :nth-child(1){
+    width: 100px;
+    height: 100px;
+    background-color: bisque;
+    border-radius: 50%;
+}
+.shape :nth-child(2){
+    width: 100px;
+    height: 100px;
+    background-color: lightpink;
+    border-radius: 25%;
+}
+.shape :nth-child(3){
+    width: 100px;
+    height: 100px;
+    background-color: lightskyblue;
+    border-radius: 10%;
+}
+
+.shape {
+    display: flex;
+}
+.shape :nth-child(2) {
+    color: white;
+    display: flex;
+    justify-content: center;    
+    align-items: center;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(90deg);
+    }
+}
+.shape :nth-child(2):hover {
+    animation-name: rotate;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+    /* 호버시 애니메이션이 종료되더라도
+    초기화 되지 않고 호버가 풀릴때 까지 유지 */
+}
+@keyframes rotate2 {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+.shape :nth-child(3):hover {
+    animation: rotate2 infinite 3s linear;
+    /* 360도 회전-무한재생-3초간격-일정하게 */
+}
+.shape :nth-child(3){
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
