@@ -204,26 +204,45 @@ const sc = readline.createInterface({
 
 //-------------------------------------------------------
 
-const plus = function(a,b) {
-    return(a+b);
-}
-const minus = function(a,b) {
-    return(a-b);
-}
-const divide = function(a,b) {
-    return(a/b);
-}
-const mult = function(a,b) {
-    return(a*b);
-}
+// const plus = function(a,b) {
+//     return(a+b);
+// }
+// const minus = function(a,b) {
+//     return(a-b);
+// }
+// const divide = function(a,b) {
+//     return(a/b);
+// }
+// const mult = function(a,b) {
+//     return(a*b);
+// }
 
-const sum = plus(1,2);
-console.log(sum);
-const div = plus(7,2);
-console.log(div);
-const divi = plus(6,1);
-console.log(divi);
-const multi = plus(2,3);
-console.log(multi);
+// const a = 6;
+// const b = 3;
+// const result1 = plus(a,b);
+// console.log(`${a}+${b} = ${result1}`);
+// const result2 = minus(a,b);
+// console.log(`${a}-${b} = ${result2}`);
+// const result3 = divide(a,b);
+// console.log(`${a}/${b} = ${result3}`);
+// const result4 = mult(a,b);
+// console.log(`${a}*${b} = ${result4}`);
 
 //-------------------------------------------------------
+
+// var person1 = {};
+// person1.name = "둘리";
+// person1.age = 22;
+// person1["isStudent"]=false;
+// console.log("이름: ", person1.name);
+// console.log("나이: ", person1["age"]);
+// console.log("학생인가: ", person1.isStudent);
+
+let person2 = {
+    name: "또치",
+    age: 23,
+    sayHello: function(){
+        console.log(`안녕? 나는${this.name}야`);
+    }
+}
+person2.sayHello();
