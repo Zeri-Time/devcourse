@@ -106,19 +106,19 @@
 
 // ----------------불변성 함수
 
-const arr = [10, 20, 30, 40,];
-const arr2 = arr.slice(0,2);
-console.log(arr2);
-const arr3 = arr.filter((_, i) => i >=2 )
-console.log(arr3);
-const arr4 = arr.filter((element) => element == 10 || element ==30);
-console.log(arr4);
-const arr5 = arr.filter((_, i) => [1,3].includes(i));
-console.log(arr5);
-const arr6 = arr.filter((_, ind) => ![1,3].includes(ind));
-console.log(arr6);
-const arr7 = arr.filter((elem) => [10,40].includes(elem));
-console.log(arr7);
+// const arr = [10, 20, 30, 40,];
+// const arr2 = arr.slice(0,2);
+// console.log(arr2);
+// const arr3 = arr.filter((_, i) => i >=2 )
+// console.log(arr3);
+// const arr4 = arr.filter((element) => element == 10 || element ==30);
+// console.log(arr4);
+// const arr5 = arr.filter((_, i) => [1,3].includes(i));
+// console.log(arr5);
+// const arr6 = arr.filter((_, ind) => ![1,3].includes(ind));
+// console.log(arr6);
+// const arr7 = arr.filter((elem) => [10,40].includes(elem));
+// console.log(arr7);
 
 // ----------------불변성 함수
 
