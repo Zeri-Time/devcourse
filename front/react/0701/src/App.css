@@ -1,9 +1,0 @@
-.container {
-  width:200px;
-  height: 200px;
-  background-color: lightcoral;
-  display: flex;
-justify-content: center;  
-align-items: center;
-margin-left: 100px;
-}
