@@ -83,3 +83,69 @@
 //     const double = el * 2;
 //     console.log(`${i+1}번 x 2 = ${double}`);
 // });
+
+// const age = [21];
+
+// -----------------배열  불변성
+// const fun1 = (value) => {
+//     value[0] = 55;
+// }
+// fun1(age);
+// console.log("age: ", age[0]);
+
+//------------------객체 불변성
+// const obj = {
+//     age: 12
+// }
+// // console.log(obj);
+// const fun2 = (value2) => {
+//     value2.age = 44;
+// }
+// fun2(obj);
+// console.log("age: ", obj);
+
+// ----------------불변성 함수
+
+const arr = [10, 20, 30, 40,];
+const arr2 = arr.slice(0,2);
+console.log(arr2);
+const arr3 = arr.filter((_, i) => i >=2 )
+console.log(arr3);
+const arr4 = arr.filter((element) => element == 10 || element ==30);
+console.log(arr4);
+const arr5 = arr.filter((_, i) => [1,3].includes(i));
+console.log(arr5);
+const arr6 = arr.filter((_, ind) => ![1,3].includes(ind));
+console.log(arr6);
+const arr7 = arr.filter((elem) => [10,40].includes(elem));
+console.log(arr7);
+
+// ----------------불변성 함수
+
+// const arr = [1, 2, 3, 4, 5];
+
+// const arr2 = [arr[0], arr[1], arr[2], arr[3], arr[4], 6 , 7];
+// console.log("arr2: ", arr2);
+// const arr3 = [...arr, 10, 200];
+// console.log("arr3: ", arr3);
+
+// ----------------불변성 함수
+
+// const arr = [1, 2, 3, 4];
+// const arr2 = [...arr].reverse();
+// console.log(arr2);
+
+// ----------------불변성 함수
+
+// const arr3 = [50, 10 ,220, 1];
+// const arr4 = [...arr3].sort((a,b) => a - b);
+// console.log("arr3: ", arr3);
+// console.log("arr4: ", arr4);
+
+// ----------------불변성 함수
+
+// const arr = [1,2,3,4];
+// const arr2 = arr.map((el,i) =>
+// [1,2].includes(i) ? el * -1 : el);
+// console.log("arr: ", arr);
+// console.log("arr2: ", arr2);
