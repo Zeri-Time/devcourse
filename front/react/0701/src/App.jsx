@@ -127,8 +127,6 @@ const textItem = () => {
 return(
   <button onClick={() => deleteActive(i)}>x</button>
 )
-  
-
 };
 
 export default App
