@@ -20,6 +20,7 @@ const CheckList = () => {
     // 저장 클릭시 실행될 함수
     const handleClick = () => {
         if (input.trim() === "") return; // 빈값 막기
+        // trim: 양쪽 공백(띄어쓰기, 탭, 줄바꿈 등)을 제거하는 메서드
         // 표시될 객체
        const newItem = {
         name: input
@@ -33,9 +34,13 @@ const CheckList = () => {
        // 입력창 초기화
        setInput("");
     }
+    
+    const handleKeyDown = (e) => {
+        if(e.key === 'Enter'){
+            handleClick();
+        }
+    }
 
-    
-    
     return(
         <>
         <input 
@@ -43,6 +48,7 @@ const CheckList = () => {
         type='text'
         value={input}
         onChange={(e) => setInput(e.target.value)}
+        onKeyDown={handleKeyDown}
         placeholder='입력하세요'
         className= 'border border-black'
         />
