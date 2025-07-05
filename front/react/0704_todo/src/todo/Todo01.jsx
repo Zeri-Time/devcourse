@@ -39,6 +39,8 @@ function TodoPrac01() {
           <li key={index}>
             {name}
             <button onClick={() => handleDelete(index)}>삭제</button>
+            {/* 화살표 함수로 담는 이유는 그냥 함수를 호출하면 
+            렌더링할때 함수가 즉시 실행되어 버리기 때문 */}
           </li>
         ))}
       </ul>
