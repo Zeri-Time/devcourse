@@ -3,18 +3,19 @@ import NameList from './components/NameList'
 import NameList2 from './components/NameList2'
 import NameList3 from './components/NameList3'
 import NameList4 from './components/NameList4'
-import CustomHook from './components/CustomHook'
-
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Main from './pages/Main'
+import Sub from './pages/Sub'
+import Name4 from './pages/Name4'
 function App() {
   return (
-    <>
-      {/* <Clock />
-      <NameList /> */}
-      {/* <NameList2 /> */}
-      {/* <NameList3 /> */}
-      {/* <NameList4 */}
-      <CustomHook />
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route index element={<Main />}></Route>
+        <Route path="/sub" element={<Sub />}></Route>
+        <Route path="/name4" element={<Name4 />}></Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
