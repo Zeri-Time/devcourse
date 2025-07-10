@@ -2,6 +2,10 @@
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 function PostDetail() {
+  const fetchData = async () => {
+    const { data, error } = await supabase.from('posts').select('*')
+    console.log(data)
+  }
   const params = useParams()
   // console.log(params)
   const [post, setPost] = useState({}) // 객체 초기화
@@ -13,7 +17,7 @@ function PostDetail() {
   }, [])
   return (
     <>
-      <h2 className="text-[24px]">- 여기는 상세 페이지 -</h2>
+      <h2 className="text-[24px]">- 상세 페이지 -</h2>
       <br />
       <div>id: {post.id} </div>
       <div className="text-[18px]">title: {post.title}</div>
