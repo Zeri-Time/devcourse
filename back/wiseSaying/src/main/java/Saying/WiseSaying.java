@@ -1,7 +1,7 @@
 package Saying;
 
 public class WiseSaying {
-    private int id;
+    private final  int id;
     private String author;
     private String content;
 
@@ -21,10 +21,6 @@ public class WiseSaying {
 
     String getContent() {
         return this.content;
-    }
-
-    void setId(int id) {
-        this.id = id;
     }
 
     void setAuthor(String author) {

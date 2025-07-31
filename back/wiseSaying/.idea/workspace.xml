@@ -5,12 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1195b8ce-f587-48a7-bdc3-1ecc078183ff" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Saying/App.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Saying/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Saying/WiseSaying.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Saying/Rq.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../devcourse-jave-01/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../devcourse-jave-01/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Saying/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Saying/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Saying/WiseSaying.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Saying/WiseSaying.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../front/js/0707_vanilla_todo/src/components/TodoItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../front/js/0707_vanilla_todo/src/components/TodoItem.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../front/next/0714_readdy/components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../front/next/0714_readdy/components/Header.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../front/next/0714_readdy/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../front/next/0714_readdy/package-lock.json" afterDir="false" />
@@ -129,7 +128,8 @@
       <updated>1753770580983</updated>
       <workItem from="1753770581977" duration="3602000" />
       <workItem from="1753834300526" duration="7603000" />
-      <workItem from="1753841956177" duration="11904000" />
+      <workItem from="1753841956177" duration="13785000" />
+      <workItem from="1753920240139" duration="6294000" />
     </task>
     <servers />
   </component>
