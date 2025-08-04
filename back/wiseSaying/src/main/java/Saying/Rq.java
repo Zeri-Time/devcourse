@@ -15,7 +15,7 @@ public class Rq {
 
         paramsMap = Arrays.stream(queryString.split("&"))
                 .map(part -> part.split("=", 2))
-                .filter(bits -> bits.length > 0 && !bits[0].trim().isEmpty()  &&  !bits[1].trim().isEmpty())
+                .filter(bits -> bits.length > 0 && !bits[0].trim().isEmpty() && !bits[1].trim().isEmpty())
                 .collect(Collectors.toMap(
                         bits -> bits[0].trim(),
                         bits -> bits[1].trim()

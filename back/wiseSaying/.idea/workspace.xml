@@ -5,10 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1195b8ce-f587-48a7-bdc3-1ecc078183ff" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Saying/Rq.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../devcourse-jave-01/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../devcourse-jave-01/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../devcourse-java-1/src/practice/_01/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../devcourse-java-1/src/practice/_02/Student.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../java-01/src/main/java/practice/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Saying/domain/AppContext.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Saying/domain/system/SysyemController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Saying/domain/wiseSaying/WiseSayingController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Saying/domain/wiseSaying/WiseSayingService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Saying/domain/wiseSaying/wiseSayingRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TDD/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../TDD/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TDD/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../TDD/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TDD/src/main/java/com/ll/Rq.java" beforeDir="false" afterPath="$PROJECT_DIR$/../TDD/src/main/java/com/ll/Rq.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../TDD/src/test/java/com/ll/RqTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../TDD/src/test/java/com/ll/RqTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../devcourse-jave-01/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../devcourse-jave-01/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../devcourse-jave-01/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../devcourse-jave-01/.idea/gradle.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../devcourse-jave-01/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../devcourse-jave-01/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../devcourse-jave-01/build.gradle.kts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../devcourse-jave-01/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../devcourse-jave-01/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../devcourse-jave-01/gradlew" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../devcourse-jave-01/gradlew.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../devcourse-jave-01/settings.gradle.kts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../devcourse-jave-01/src/main/java/Main.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Saying/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Saying/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Saying/Rq.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Saying/Rq.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Saying/WiseSaying.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Saying/WiseSaying.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../front/js/0707_vanilla_todo/src/components/TodoItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../front/js/0707_vanilla_todo/src/components/TodoItem.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../front/next/0714_readdy/components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../front/next/0714_readdy/components/Header.tsx" afterDir="false" />
@@ -98,14 +122,15 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/brian/Desktop/devcourse/back/wiseSaying&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;모듈&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;패싯&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;Console&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
     &quot;애플리케이션.Main.executor&quot;: &quot;Run&quot;
@@ -129,7 +154,9 @@
       <workItem from="1753770581977" duration="3602000" />
       <workItem from="1753834300526" duration="7603000" />
       <workItem from="1753841956177" duration="13785000" />
-      <workItem from="1753920240139" duration="6294000" />
+      <workItem from="1753920240139" duration="7270000" />
+      <workItem from="1754270094499" duration="20000" />
+      <workItem from="1754283762932" duration="674000" />
     </task>
     <servers />
   </component>
