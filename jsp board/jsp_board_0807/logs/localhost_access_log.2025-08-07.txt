@@ -28,3 +28,13 @@
 0:0:0:0:0:0:0:1 - - [07/Aug/2025:12:06:38 +0900] "GET /hello HTTP/1.1" 200 22
 0:0:0:0:0:0:0:1 - - [07/Aug/2025:12:06:49 +0900] "GET /hello HTTP/1.1" 200 22
 0:0:0:0:0:0:0:1 - - [07/Aug/2025:12:06:51 +0900] "GET /hello HTTP/1.1" 200 22
+0:0:0:0:0:0:0:1 - - [07/Aug/2025:12:29:47 +0900] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 864
+0:0:0:0:0:0:0:1 - - [07/Aug/2025:12:30:05 +0900] "GET /hello HTTP/1.1" 200 22
+0:0:0:0:0:0:0:1 - - [07/Aug/2025:12:30:05 +0900] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 864
+0:0:0:0:0:0:0:1 - - [07/Aug/2025:12:34:11 +0900] "GET /%ED%98%80%ED%98%95%EB%AC%B4 HTTP/1.1" 404 835
+0:0:0:0:0:0:0:1 - - [07/Aug/2025:12:34:11 +0900] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 864
+0:0:0:0:0:0:0:1 - - [07/Aug/2025:12:34:17 +0900] "GET /gugudan HTTP/1.1" 200 30
+0:0:0:0:0:0:0:1 - - [07/Aug/2025:12:34:17 +0900] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 864
+0:0:0:0:0:0:0:1 - - [07/Aug/2025:12:35:27 +0900] "GET /gugudan HTTP/1.1" 200 30
+0:0:0:0:0:0:0:1 - - [07/Aug/2025:12:35:27 +0900] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 864
+0:0:0:0:0:0:0:1 - - [07/Aug/2025:12:35:35 +0900] "GET /gugudan HTTP/1.1" 200 30
