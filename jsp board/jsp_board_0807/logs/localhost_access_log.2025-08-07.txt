@@ -9,3 +9,7 @@
 0:0:0:0:0:0:0:1 - - [07/Aug/2025:11:31:14 +0900] "GET /hello HTTP/1.1" 200 13
 0:0:0:0:0:0:0:1 - - [07/Aug/2025:11:31:35 +0900] "GET /hello HTTP/1.1" 200 13
 0:0:0:0:0:0:0:1 - - [07/Aug/2025:11:31:38 +0900] "GET /hello HTTP/1.1" 200 13
+0:0:0:0:0:0:0:1 - - [07/Aug/2025:11:31:50 +0900] "GET /hello HTTP/1.1" 200 22
+0:0:0:0:0:0:0:1 - - [07/Aug/2025:11:38:19 +0900] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 864
+0:0:0:0:0:0:0:1 - - [07/Aug/2025:11:39:18 +0900] "GET /hello HTTP/1.1" 200 22
+0:0:0:0:0:0:0:1 - - [07/Aug/2025:11:39:18 +0900] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 864
