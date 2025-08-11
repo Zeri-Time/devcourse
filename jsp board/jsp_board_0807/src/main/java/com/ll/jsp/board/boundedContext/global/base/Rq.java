@@ -1,6 +1,5 @@
 package com.ll.jsp.board.boundedContext.global.base;
 
-import com.ll.jsp.board.boundedContext.article.dto.Article;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,7 +7,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
 
 public class Rq {
     private final HttpServletRequest req;
@@ -53,7 +51,7 @@ public class Rq {
         return value;
     }
 
-    public void appendBody(String str) {
+    public void print(String str) {
         try {
             resp.getWriter().append(str);
         } catch (IOException e) {
@@ -88,5 +86,58 @@ public class Rq {
 
     public String getMethod() {
         return req.getMethod();
+    }
+
+    public String getActionPath() {
+        String[] bits = req.getRequestURI().split("/");
+
+        return "/%s/%s/%s".formatted(bits[1], bits[2], bits[3]);
+    }
+
+    public long getLongPathValueByIndex(int index, int defaultValue) {
+        String value = getPathValueByIndex(index, null);
+
+        if (value == null) {
+            return defaultValue;
+        }
+
+        try {
+            return Long.parseLong(value);
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
+    }
+
+    public String getPathValueByIndex(int index,  String defaultValue) {
+        String[] bits = req.getRequestURI().split("/");
+        // /usr/article/detail/1
+        // ["", "usr", "article", "detail", "1"]
+        try {
+            return bits[3 + index];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return defaultValue;
+        }
+    }
+
+    public void println(String str) {
+        print(str + "\n");
+    }
+
+    public  void replace (String msg, String url) {
+        println("""
+                <script>
+                    alert("%s");
+                    location.replace("%s");
+                </script>
+                """.formatted(msg, url));
+    }
+
+    public void historyBack(String msg) {
+        println("""
+                <script>
+                    alert("%s");
+                    history.back();
+                </script>
+                """.formatted(msg));
     }
 }

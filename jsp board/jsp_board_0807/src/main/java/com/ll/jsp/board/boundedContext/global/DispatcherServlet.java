@@ -23,14 +23,18 @@ public class DispatcherServlet extends HttpServlet {
 
         switch (rq.getMethod()) {
             case "GET":
-                switch (rq.getUrlPath()) {
+                switch (rq.getActionPath()) {
                     case "/usr/article/write" -> articleController.showWrite(rq);
                     case "/usr/article/list" -> articleController.showList(rq);
+                    case "/usr/article/detail" -> articleController.showDetail(rq);
+                    case "/usr/article/modify" -> articleController.showModify(rq);
+                    case "/usr/article/delete" -> articleController.doDelete(rq);
                     case "/usr/member/join" -> memberController.showJoin(rq);
                 }
             case "POST":
-                switch (rq.getUrlPath()) {
+                switch (rq.getActionPath()) {
                     case "/usr/article/write" -> articleController.doWrite(rq);
+                    case "/usr/article/modify" -> articleController.doModify(rq);
                 }
         }
     }

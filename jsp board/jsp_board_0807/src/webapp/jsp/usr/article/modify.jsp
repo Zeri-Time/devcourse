@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!-- JSP 파일에서 JSTL을 사용하기 위해 taglib 선언-->
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <script>
@@ -29,7 +30,11 @@
 </script>
 
 <div>
-    <h2>게시물 작성</h2>
+    <h2>게시물 수정</h2>
+
+    <div>
+        <span>번호 : ${article.id}</span>
+    </div>
 
     <form method="POST" onsubmit="articleSaveSubmitForm(this); return false;">
         <div>
@@ -38,6 +43,7 @@
                    id="title"
                    name="title"
                    placeholder="제목을 입력해주세요"
+                   value="${article.title}"
                    required>
         </div>
 
@@ -46,7 +52,7 @@
             <textarea id="content"
                       name="content"
                       placeholder="내용을 입력해주세요"
-                      required></textarea>
+                      required>${article.content}</textarea>
         </div>
 
         <div>

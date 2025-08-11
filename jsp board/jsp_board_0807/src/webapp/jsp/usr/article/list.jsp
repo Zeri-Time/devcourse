@@ -16,7 +16,9 @@
         <c:forEach var="article" items="${articleList}" varStatus="status">
             <tr>
                 <td>${article.id}</td>
-                <td>${article.title}</td>
+                <td>
+                    <a href="/usr/article/detail/${article.id}">${article.title}</a>
+                </td>
             </tr>
         </c:forEach>
         </tbody>
