@@ -22,20 +22,26 @@ public class DispatcherServlet extends HttpServlet {
         ArticleController articleController = Container.articleController;
 
         switch (rq.getMethod()) {
-            case "GET":
+            case "GET" -> {
                 switch (rq.getActionPath()) {
                     case "/usr/article/write" -> articleController.showWrite(rq);
                     case "/usr/article/list" -> articleController.showList(rq);
                     case "/usr/article/detail" -> articleController.showDetail(rq);
                     case "/usr/article/modify" -> articleController.showModify(rq);
-                    case "/usr/article/delete" -> articleController.doDelete(rq);
                     case "/usr/member/join" -> memberController.showJoin(rq);
+                    case "/usr/member/login" -> memberController.showLogin(rq);
                 }
-            case "POST":
+            }
+            case "POST" -> {
                 switch (rq.getActionPath()) {
                     case "/usr/article/write" -> articleController.doWrite(rq);
                     case "/usr/article/modify" -> articleController.doModify(rq);
+                    case "/usr/article/delete" -> articleController.doDelete(rq);
+                    case "/usr/member/join" -> memberController.doJoin(rq);
+                    case "/usr/member/login" -> memberController.doLogin(rq);
+                    case "/usr/member/logout" -> memberController.doLogout(rq);
                 }
+            }
         }
     }
 

@@ -29,6 +29,8 @@
     }
 </script>
 
+<%@ include file="../common/header.jspf" %>
+
 <div>
     <h2>게시물 수정</h2>
 
@@ -61,3 +63,5 @@
         </div>
     </form>
 </div>
+
+<%@ include file="../common/footer.jspf" %>

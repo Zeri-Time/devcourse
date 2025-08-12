@@ -1,6 +1,8 @@
 package com.ll.jsp.board.boundedContext.article.repository;
 
 import com.ll.jsp.board.boundedContext.article.dto.Article;
+import com.ll.jsp.board.boundedContext.base.Container;
+import com.ll.jsp.board.db.DBConnection;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -10,11 +12,16 @@ import java.util.stream.LongStream;
 public class ArticleRepository {
     private List<Article> articleList;
     private long lastId;
+    private DBConnection dbConnection;
 
     public ArticleRepository() {
         articleList = new ArrayList<>();
         makeTestData();
-        lastId = articleList.get(articleList.size() -1).getId();
+        lastId = articleList.get(articleList.size() - 1).getId();
+
+        dbConnection = Container.dbConnection;
+
+        dbConnection.connect();
     }
 
     void makeTestData() {
