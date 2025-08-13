@@ -5,24 +5,28 @@
 <%@ include file="../common/header.jspf" %>
 
 <div>
-    <h1>${article.title}</h1>
+    <h1>${articleDto.title}</h1>
     <div>
-        <span>번호 : ${article.id}</span>
+        <span>번호 : ${articleDto.id}</span>
     </div>
 
     <div>
-        <span>내용 : ${article.content}</span>
+        <span>작성자 : ${articleDto.author}</span>
     </div>
 
     <div>
-        <span>작성일 : 2025-00-00 00:00</span>
+        <span>내용 : ${articleDto.content}</span>
+    </div>
+
+    <div>
+        <span>작성일 : ${articleDto.regDate}</span>
     </div>
 
     <div>
         <a href="/usr/article/list">목록</a>
     </div>
     <div>
-        <a href="/usr/article/modify/${article.id}">수정</a>
+        <a href="/usr/article/modify/${articleDto.id}">수정</a>
     </div>
 
     <a herf="#" id="deleteLinkBtn">삭제</a>
@@ -32,7 +36,7 @@
             action="/usr/article/delete"
             method="POST"
     >
-        <input type="hidden" name="deleteId" value="${article.id}" readonly>
+        <input type="hidden" name="deleteId" value="${articleDto.id}" readonly>
     </form>
 </div>
 

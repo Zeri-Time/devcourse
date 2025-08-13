@@ -9,23 +9,22 @@ import com.ll.jsp.board.boundedContext.member.service.MemberService;
 import com.ll.jsp.board.db.DBConnection;
 
 public class Container {
+    public static DBConnection dbconnection;
     public static ArticleRepository articleRepository;
     public static ArticleService articleService;
     public static ArticleController articleController;
     public static MemberRepository memberRepository;
-    public static DBConnection dbConnection;
     public static MemberService memberService;
     public static MemberController memberController;
 
-
     static {
+        dbconnection = new DBConnection();
+        dbconnection.connect();
         memberRepository = new MemberRepository();
         memberService = new MemberService();
         memberController = new MemberController();
         articleRepository = new ArticleRepository();
-        dbConnection = new DBConnection();
         articleService = new ArticleService();
         articleController = new ArticleController();
-
     }
 }
