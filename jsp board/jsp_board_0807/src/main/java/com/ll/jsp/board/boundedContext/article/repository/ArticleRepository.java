@@ -3,6 +3,7 @@ package com.ll.jsp.board.boundedContext.article.repository;
 import com.ll.jsp.board.boundedContext.article.dto.ArticleDto;
 import com.ll.jsp.board.boundedContext.article.entity.Article;
 import com.ll.jsp.board.boundedContext.base.Container;
+import com.ll.jsp.board.boundedContext.member.dto.Member;
 import com.ll.jsp.board.db.DBConnection;
 
 import java.util.ArrayList;
@@ -48,14 +49,15 @@ public class ArticleRepository {
         return articleDtoList;
     }
 
-    public long save(String title, String content) {
+    public long save(String title, String content, Member member) {
         int id = dbConnection.insert(""" 
                             INSERT INTO article 
                             SET 
                             title='%s', 
                             content='%s',
+                            member_id='%d',
                             regDate=now()
-                        """.formatted(title, content));
+                        """.formatted(title, content, member.getId()));
 
         return id;
     }

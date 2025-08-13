@@ -1,5 +1,6 @@
 package com.ll.jsp.board.boundedContext.global.base;
 
+import com.ll.jsp.board.boundedContext.member.dto.Member;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -156,6 +157,10 @@ public class Rq {
         return session.getAttribute(attrName) != null;
     }
 
+    public Member getSessionAttr(String attrName) {
+        return (Member) session.getAttribute(attrName);
+    }
+
     public void login(Object value) {
         setSessionAttr(sessionAttrName, value);
     }
@@ -170,6 +175,10 @@ public class Rq {
 
     public boolean isLogout() {
         return !isLogined();
+    }
+
+    public Member getLoggedInMemer() {
+        return getSessionAttr(sessionAttrName);
     }
 
 }

@@ -4,6 +4,7 @@ import com.ll.jsp.board.boundedContext.article.dto.ArticleDto;
 import com.ll.jsp.board.boundedContext.article.entity.Article;
 import com.ll.jsp.board.boundedContext.article.repository.ArticleRepository;
 import com.ll.jsp.board.boundedContext.base.Container;
+import com.ll.jsp.board.boundedContext.member.dto.Member;
 
 import java.util.List;
 
@@ -22,8 +23,8 @@ public class ArticleService {
         return articleRepository.joinMemberFindAll();
     }
 
-    public long write(String title, String content) {
-        return articleRepository.save(title, content);
+    public long write(String title, String content, Member member) {
+        return articleRepository.save(title, content, member);
     }
 
     public Article findById(long id) {
