@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: demo
+  output:
+    ansi:
+      enabled: always
+    profiles:
+      active: dev
