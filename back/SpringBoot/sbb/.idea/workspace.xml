@@ -5,19 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c89ec57b-00cd-4c96-8dda-0aa4005c14c9" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/../../Spring/demo/src/main/java/com/example/demo/HelloController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Spring/ico-clone/src/main/java/com/zt/domain/testPost/testPost/service/TestPostService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../Spring/ico-clone/src/main/java/com/zt/framework/annotations/Service.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/zt/sbb/HelloController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/zt/sbb/HelloLombok.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/zt/sbb/SbbApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/zt/sbb/Answer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/zt/sbb/MainController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/zt/sbb/Question.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/zt/sbb/QuestionRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Spring/demo/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../../Spring/demo/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Spring/demo/src/main/java/com/example/demo/Answer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Spring/demo/src/main/java/com/example/demo/Answer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Spring/demo/src/main/java/com/example/demo/AnswerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Spring/demo/src/main/java/com/example/demo/AnswerRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Spring/demo/src/main/java/com/example/demo/HelloController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Spring/demo/src/main/java/com/example/demo/HelloController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Spring/demo/src/main/java/com/example/demo/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Spring/demo/src/main/java/com/example/demo/MainController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Spring/demo/src/main/java/com/example/demo/Question.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Spring/demo/src/main/java/com/example/demo/Question.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Spring/demo/src/main/java/com/example/demo/QuestionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Spring/demo/src/main/java/com/example/demo/QuestionRepository.java" afterDir="false" />
@@ -26,8 +22,14 @@
       <change beforePath="$PROJECT_DIR$/../../Spring/demo/src/test/java/com/example/demo/sbb/QuestionRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Spring/demo/src/test/java/com/example/demo/sbb/QuestionRepositoryTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Spring/ico-clone/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../Spring/ico-clone/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Spring/ico-clone/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../../Spring/ico-clone/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Spring/ico-clone/src/main/java/com/zt/domain/testPost/testPost/service/TestPostService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Spring/ico-clone/src/main/java/com/zt/domain/testPost/testPost/service/TestPostService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Spring/ico-clone/src/main/java/com/zt/framework/annotations/Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Spring/ico-clone/src/main/java/com/zt/framework/annotations/Service.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Spring/ico-clone/src/main/java/com/zt/framework/ioc/ApplicationContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Spring/ico-clone/src/main/java/com/zt/framework/ioc/ApplicationContext.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Spring/ico-clone/src/test/java/com/zt/framework/ioc/ApplicationContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Spring/ico-clone/src/test/java/com/zt/framework/ioc/ApplicationContextTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Spring/ico-clone/src/test/java/com/zt/framework/ioc/ApplicationContextTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Spring/ico-clone/src/test/java/com/zt/framework/ioc/ApplicationContextTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/zt/sbb/HelloController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/zt/sbb/HelloController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/zt/sbb/HelloLombok.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/zt/sbb/HelloLombok.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../TDD/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../TDD/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../TDD/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../../TDD/build.gradle.kts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../TDD/src/main/java/com/ll/Rq.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../TDD/src/main/java/com/ll/Rq.java" afterDir="false" />
@@ -143,6 +145,7 @@
     "RequestMappingsPanelWidth0": "75",
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "Spring Boot.SbbApplication.executor": "Run",
     "git-widget-placeholder": "main",
@@ -157,7 +160,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="애플리케이션.HelloLombok">
+  <component name="RunManager" selected="Spring Boot.SbbApplication">
     <configuration name="HelloLombok" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.zt.sbb.HelloLombok" />
       <module name="sbb.main" />
@@ -201,7 +204,7 @@
       <option name="presentableId" value="Default" />
       <updated>1755564938498</updated>
       <workItem from="1755564939644" duration="2075000" />
-      <workItem from="1755567053956" duration="1786000" />
+      <workItem from="1755567053956" duration="11606000" />
     </task>
     <servers />
   </component>
