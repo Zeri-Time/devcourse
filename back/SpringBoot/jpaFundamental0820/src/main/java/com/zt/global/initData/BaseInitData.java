@@ -16,10 +16,20 @@ public class BaseInitData {
     @Bean
     ApplicationRunner baseInitDataApplicationRunner() {
         return args -> {
+
+            if(postRepository.count() > 0) return;
+
             Post post = new Post();
             post.setTitle("제목 1");
 
             postRepository.save(post);
+
+            Post post2 = new Post();
+            post2.setTitle("제목 2");
+
+            postRepository.save(post2);
+
+            System.out.println("기본 데이터가 초기화 되었습니다");
         };
     }
 }
