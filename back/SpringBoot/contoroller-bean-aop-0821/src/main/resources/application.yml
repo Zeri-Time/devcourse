@@ -1,0 +1,3 @@
+spring:
+  application:
+    name: contoroller-bean-aop-0821
