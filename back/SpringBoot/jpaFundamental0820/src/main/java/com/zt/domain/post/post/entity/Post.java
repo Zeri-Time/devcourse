@@ -4,29 +4,29 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity // 아래 구조대로 DB테이블을 만들어야 한다
-//@Table(name="post_list") // 이렇게 테이블 이름을 원하는거로 만들수도 있음
+@Entity // 아래 구조대로 DB 테이블(컬럼)을 만들어야 한다.
+@ToString
 public class Post {
-    @Id // PK 라는 뜻. 얘는 무조건 있어야함.
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // AutoIncrement 라는 뜻
-
-    private int id;
-    private String title;
+    @Id // PK
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT
+    private int id; // INT
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
-
+    private String title; // VARCHAR(255)
     @Column(columnDefinition = "TEXT")
-    private String content;
+    private String content; // TEXT
 
-    public Post(String title, String content){
+    public Post(String title, String content) {
+        this.createDate = LocalDateTime.now();
+        this.modifyDate = this.createDate;
         this.title = title;
         this.content = content;
-        this.createDate = LocalDateTime.now();
     }
 }
