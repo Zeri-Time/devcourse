@@ -1,5 +1,7 @@
 package com.zt.global.initData;
 
+import com.zt.domain.member.member.entity.Member;
+import com.zt.domain.member.member.service.MemberService;
 import com.zt.domain.post.post.entity.Post;
 import com.zt.domain.post.post.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -14,12 +16,14 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Configuration
+// dev, test, prod 등 활성화된 프로파일에 상관없이 항상 실행
 public class BaseInitData {
     @Autowired
     @Lazy
     private BaseInitData self;
 
     private final PostService postService;
+    private final MemberService memberService;
 
     @Bean
     ApplicationRunner baseInitDataApplicationRunner() {
@@ -28,15 +32,23 @@ public class BaseInitData {
             self.work2();
             // 별도의 Thread 를 사용 이유 : work3 메서드에서 예외가 발생해도 스프링부트가 꺼지지 않도록
             new Thread(() -> self.work3()).start();
+            self.work4();
         };
     }
 
     @Transactional
     void work1() {
+        if (memberService.count() > 0) return;
+        Member memberSystem = memberService.join("system", "1234", "시스템");
+        Member memberAdmin = memberService.join("admin", "1234", "관리자");
+        Member memberUser1 = memberService.join("user1", "1234", "유저1");
+        Member memberUser2 = memberService.join("user2", "1234", "유저2");
+        Member memberUser3 = memberService.join("user3", "1234", "유저3");
+
         if (postService.count() > 0) return;
 
-        Post post1 = postService.write("제목 1", "내용 1");
-        Post post2 = postService.write("제목 2", "내용 2");
+        Post post1 = postService.write(memberUser1, "제목 1", "내용 1");
+        Post post2 = postService.write(memberUser2,"제목 2", "내용 2");
 
         System.out.println("post1.getId() : " +  post1.getId());
         System.out.println("post2.getId() : " +  post2.getId());
@@ -68,5 +80,13 @@ public class BaseInitData {
 
         postService.modify(post2, "제목 2 수정", "내용 2 수정");
 
+    }
+
+    @Transactional
+    void work4() {
+        Optional<Post> opPost1  = postService.findById(1);
+        Post post1 = opPost1.get();
+
+        postService.modify(post1, "제목 1 수정", "내용 1 수정");
     }
 }
