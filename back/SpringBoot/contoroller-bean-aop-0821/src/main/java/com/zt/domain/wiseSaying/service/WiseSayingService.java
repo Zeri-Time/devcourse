@@ -1,6 +1,7 @@
 package com.zt.domain.wiseSaying.service;
 
 import com.zt.domain.wiseSaying.entity.WiseSaying;
+import com.zt.domain.wiseSaying.repository.WiseSayingRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -9,6 +10,12 @@ import java.util.Optional;
 
 @Service
 public class WiseSayingService {
+    private final WiseSayingRepository wiseSayingRepository;
+
+    public WiseSayingService(WiseSayingRepository wiseSayingRepository) {
+        this.wiseSayingRepository = wiseSayingRepository;
+    }
+
     private int lastId = 0;
     private final List<WiseSaying> wiseSayings = new ArrayList<>() {{
         add(new WiseSaying(++lastId, "명언 1", "작가 1"));
@@ -19,31 +26,24 @@ public class WiseSayingService {
     }};
 
     public WiseSaying write(String content, String author) {
-        int id = ++lastId;
-
-        WiseSaying wiseSaying = new WiseSaying(id, content, author);
-
-        wiseSayings.add(wiseSaying);
-
-        return wiseSaying;
+        return wiseSayingRepository.save(content, author);
     }
 
     public List<WiseSaying> findAll() {
-        return wiseSayings;
+        return wiseSayingRepository.findAll();
     }
 
     public Optional<WiseSaying> findById(int id) {
-        return wiseSayings
-                .stream()
-                .filter(wiseSaying -> wiseSaying.getId() == id)
-                .findFirst();
+        return wiseSayingRepository.findById(id);
     }
 
     public void delete(WiseSaying wiseSaying) {
-        wiseSayings.remove(wiseSaying);
+        wiseSayingRepository.delete(wiseSaying);
     }
 
     public void modify(WiseSaying wiseSaying, String content, String author) {
         wiseSaying.modify(content, author);
     }
+
+
 }
