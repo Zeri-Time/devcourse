@@ -4,6 +4,7 @@ import com.zt.domain.member.member.entity.Member;
 import com.zt.domain.member.member.service.MemberService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.commonmark.renderer.html.HtmlRenderer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
@@ -20,8 +21,8 @@ public class AppConfig {
     private AppConfig self;
 
     @Bean
-    PersonRepository personRepository() {
-        return new PersonRepository(1);
+    HtmlRenderer htmlRenderer() {
+        return HtmlRenderer.builder().build();
     }
 
     @Bean
@@ -33,7 +34,7 @@ public class AppConfig {
     public ApplicationRunner baseInitDataApplicationRunner() {
         return args -> {
             self.work1();
-            this.work2();
+            self.work2();
         };
     }
 

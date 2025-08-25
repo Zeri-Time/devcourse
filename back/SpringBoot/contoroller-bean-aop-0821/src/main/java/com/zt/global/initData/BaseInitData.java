@@ -20,7 +20,11 @@ public class BaseInitData {
             wiseSayingService.write("명언 2", "작가 2");
             wiseSayingService.write("명언 3", "작가 3");
             wiseSayingService.write("명언 4", "작가 4");
-            wiseSayingService.write("명언 5", "작가 5");
+            wiseSayingService.write("""
+                    - 하루 30분 운동을 해라
+                    - 잠은 7시간 이상 자라
+                    - 매일 30분 독서를 해라
+                    """, "작가 5");
         };
     }
 }

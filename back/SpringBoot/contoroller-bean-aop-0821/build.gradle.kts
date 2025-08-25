@@ -4,9 +4,9 @@ plugins {
     id("io.spring.dependency-management") version "1.1.7"
 }
 
-group = "zt"
+group = "com"
 version = "0.0.1-SNAPSHOT"
-description = "contoroller-bean-aop-0821"
+description = "controller-bean-aop-2508"
 
 java {
     toolchain {
@@ -32,7 +32,9 @@ dependencies {
     runtimeOnly("com.h2database:h2")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    runtimeOnly("com.mysql:mysql-connector-j")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation("org.commonmark:commonmark:0.24.0")
 }
 
 tasks.withType<Test> {
