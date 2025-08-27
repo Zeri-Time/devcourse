@@ -1,0 +1,15 @@
+<form method="POST" th:object="${form}">
+    <ul th:if="${#fields.hasAnyErrors()}">
+        <li th:each="err : ${#fields.allErrors()}" th:text="${err}" style="color:red;"></li>
+    </ul>
+    <label for="title">제목</label>
+    <!--    <input type="text" id="title" name="title" th:value="*{title}" placeholder="제목" autofocus>-->
+    <input type="text" th:field="*{title}" placeholder="제목" autofocus>
+
+    <br>
+    <label for="content">제목</label>
+    <!--    <textarea id="content" name="content" th:text="*{content}" placeholder="내용"  ></textarea>-->
+    <textarea th:field="*{content}" placeholder="내용"  ></textarea>
+    <br>
+    <input type="submit" value="작성">
+</form>

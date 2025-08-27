@@ -1,0 +1,14 @@
+<h3>게시글 목록</h3>
+<ul>
+    <li th:each="post : ${posts}">
+        <span>[[${post.id}]]</span>
+        /
+        <span><a th:href="@{|/posts/detail/${post.id}|}" th:text="${post.title}"></a></span>
+        /
+        <span th:text="${#temporals.format(post.createDate, 'yy.MM.dd HH:mm')}"></span>
+    </li>
+</ul>
+
+<div>
+    <a href="/posts/write">글쓰기</a>
+</div>
