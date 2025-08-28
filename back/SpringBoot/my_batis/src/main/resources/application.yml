@@ -4,3 +4,6 @@ spring:
   output:
     ansi:
       enabled: always
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/**/*.xml #XML 매퍼 파일 위치 명세
+  type-aliases-package: com.back.domain.post.post.dto # resultType 간소화 가능

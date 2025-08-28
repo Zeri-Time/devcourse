@@ -13,11 +13,11 @@ public class PostService {
     private final PostRepository postRepository;
 
     public List<Post> findAll() {
-        return postRepository.findAll("","");
+        return postRepository.findAll();
     }
 
-    public List<Post> findAll(String orderBy, String orderDirection) {
-        return postRepository.findAll(orderBy, orderDirection);
+    public List<Post> findAllOrdered(String orderBy, String orderByDirection) {
+        return postRepository.findAllOrdered(orderBy, orderByDirection);
     }
 
     public Post findById(int id) {
@@ -55,5 +55,13 @@ public class PostService {
 
     public List<Post> search(String kwType, String kw) {
         return postRepository.search(kwType, kw);
+    }
+
+    public int deleteByIds(List<Integer> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return 0;
+        }
+
+        return postRepository.deleteByIds(ids);
     }
 }

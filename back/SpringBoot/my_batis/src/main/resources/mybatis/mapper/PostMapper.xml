@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.back.domain.post.post.repository.PostRepository">
+
+    <!-- 전체 게시물 조회 -->
+    <!--
+    resultType 간소화 반영
+    수정 전
+    <select id="findAll" resultType="com.back.domain.post.post.dto.Post>
+    -->
+    <select id="findAll" resultType="Post">
+        SELECT * FROM post
+    </select>
+
+    <!-- 정렬된 게시물 조회 -->
+    <select id="findAllOrdered" resultType="Post">
+        SELECT * FROM post
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY
+            <choose>
+                <when test="orderBy == 'title'">title</when>
+                <when test="orderBy == 'createDate'">createDate</when>
+                <when test="orderBy == 'modifyDate'">modifyDate</when>
+            </choose>
+        </if>
+        <if test="orderByDirection != null and orderByDirection.toLowerCase() == 'desc'">
+            DESC
+        </if>
+    </select>
+
+    <!-- 단일 게시물 조회 -->
+    <select id="findById" resultType="Post">
+        SELECT * FROM post WHERE id = #{id}
+    </select>
+
+    <!-- 게시물 생성 (ID 반환) -->
+    <insert id="create" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO post
+        SET createDate = NOW(),
+            modifyDate = NOW(),
+            title = #{title},
+            content = #{content}
+    </insert>
+
+    <!-- 게시물 생성 V2 -->
+    <insert id="createV2">
+        INSERT INTO post
+        SET createDate = NOW(),
+            modifyDate = NOW(),
+            title = #{title},
+            content = #{content}
+    </insert>
+
+    <!-- 마지막 INSERT ID 조회 -->
+    <select id="getLastInsertId" resultType="int">
+        SELECT LAST_INSERT_ID()
+    </select>
+
+    <!-- 게시물 삭제 -->
+    <delete id="deleteById">
+        DELETE FROM post WHERE id = #{id}
+    </delete>
+
+    <!-- 게시물 수정 -->
+    <update id="update">
+        UPDATE post
+        <set>
+            modifyDate = NOW(),
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+        </set>
+        <where>
+            <if test="id != null and id > 0">
+                id = #{id}
+            </if>
+        </where>
+    </update>
+
+    <!-- 게시물 검색 -->
+    <select id="search" resultType="Post">
+        SELECT * FROM post
+        <where>
+            <choose>
+                <when test="kwType == 'title'">
+                    title LIKE CONCAT('%', #{kw}, '%')
+                </when>
+                <when test="kwType == 'content'">
+                    content LIKE CONCAT('%', #{kw}, '%')
+                </when>
+                <otherwise>
+                    (
+                    title LIKE CONCAT('%', #{kw}, '%')
+                    OR
+                    content LIKE CONCAT('%', #{kw}, '%')
+                    )
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <!-- 다중 게시물 삭제 -->
+    <delete id="deleteByIds">
+        DELETE FROM post
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
