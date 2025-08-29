@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.back.domain.member.member.repository.MemberRepository">
+<mapper namespace="com.back.domain.member.repository.MemberRepository">
 
     <!--  전체 게시물 조회 -->
     <select id="findAll" resultType="Member">
@@ -58,4 +58,36 @@
             </if>
         </where>
     </update>
+
+    <select id="search" resultType="Member">
+        SELECT * FROM member
+        <where>
+            <choose>
+                <when test="kwType == 'username'">
+                    username LIKE CONCAT('%', #{kw}, '%')
+                </when>
+                <when test="kwType == 'name'">
+                    name LIKE CONCAT('%', #{kw}, '%')
+                </when>
+                <when test="kwType == 'email'">
+                    email LIKE CONCAT('%', #{kw}, '%')
+                </when>
+                <otherwise>
+                    username LIKE CONCAT('%', #{kw}, '%')
+                    OR
+                    name LIKE CONCAT('%', #{kw}, '%')
+                    OR
+                    email LIKE CONCAT('%', #{kw}, '%')
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <delete id="deleteByIds">
+        DELETE FROM member
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

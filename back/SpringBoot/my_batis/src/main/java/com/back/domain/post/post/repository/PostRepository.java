@@ -20,14 +20,22 @@ public interface PostRepository {
 
     int create(Post post);
 
-    void createV2(
+    void createVoid(
             @Param("title") String title,
-            @Param("content") String content
+            @Param("content") String content,
+            @Param("memberId") int memberId
     );
 
     int getLastInsertId();
 
     int deleteById(int id);
+
+    Post findByIdWithAuthorName(int id);
+
+    List<Post> searchWithAuthorName(
+            @Param("kwType") String kwType,
+            @Param("kw") String kw
+    );
 
     int update(
             @Param("id") int id,

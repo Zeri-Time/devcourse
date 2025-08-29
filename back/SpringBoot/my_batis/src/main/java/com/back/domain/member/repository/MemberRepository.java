@@ -8,11 +8,13 @@ import java.util.List;
 
 @Mapper
 public interface MemberRepository {
-    List<Member>findAll();
+    List<Member> findAll();
 
     Member findById(int id);
 
     Member findByUsername(String username);
+
+    int deleteByIds(@Param("ids") List<Integer> ids);
 
     int save(Member member);
 
@@ -25,4 +27,6 @@ public interface MemberRepository {
             @Param("name") String name,
             @Param("email") String email
     );
+
+    List<Member> search(String kwType, String kw);
 }

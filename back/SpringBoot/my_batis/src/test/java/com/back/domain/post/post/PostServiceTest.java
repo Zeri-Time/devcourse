@@ -41,12 +41,13 @@ public class PostServiceTest {
     @DisplayName("게시물 생성")
     void t3 () {
         // when: 게시글 작성
-        int id = postService.create("제목 3", "내용 3");
+        int id = postService.create("제목 3", "내용 3", 2);
         // then: 해당 id의 게시글 불러오기
         Post post = postService.findById(id);
 
         assertThat(post.getTitle()).isEqualTo("제목 3");
         assertThat(post.getContent()).isEqualTo("내용 3");
+        assertThat(post.getMemberId()).isEqualTo(2);
     }
 
     @Transactional
@@ -54,13 +55,14 @@ public class PostServiceTest {
     @DisplayName("게시물 생성")
     void t4 () {
         // when: 게시글 작성
-        postService.createV2("제목 3", "내용 3");
+        postService.createVoid("제목 3", "내용 3", 7);
         // then: 해당 id의 게시글 불러오기
         int id = postService.getLastInsertId();
         Post post = postService.findById(id);
 
         assertThat(post.getTitle()).isEqualTo("제목 3");
         assertThat(post.getContent()).isEqualTo("내용 3");
+        assertThat(post.getMemberId()).isEqualTo(7);
     }
 
     @Transactional
@@ -72,7 +74,7 @@ public class PostServiceTest {
 
         List<Post> posts = postService.findAll();
 
-        assertThat(posts).hasSize(1);
+        assertThat(posts).hasSize(2);
     }
 
     @Transactional
@@ -100,7 +102,7 @@ public class PostServiceTest {
         System.out.println("1 : " + posts);
 
         posts = postService.search("title", "제목");
-        assertThat(posts).hasSize(2);
+        assertThat(posts).hasSize(3);
 
         posts = postService.search("title", "제목 2");
         assertThat(posts).hasSize(1);
@@ -113,7 +115,7 @@ public class PostServiceTest {
         assertThat(posts).hasSize(1);
 
         posts = postService.search("content", "내용");
-        assertThat(posts).hasSize(2);
+        assertThat(posts).hasSize(3);
 
         posts = postService.search("content", "내용 2");
         assertThat(posts).hasSize(1);
@@ -126,7 +128,7 @@ public class PostServiceTest {
         assertThat(posts).hasSize(1);
 
         posts = postService.search("", "제목");
-        assertThat(posts).hasSize(2);
+        assertThat(posts).hasSize(3);
 
         posts = postService.search("", "제목 2");
         assertThat(posts).hasSize(1);
@@ -135,7 +137,7 @@ public class PostServiceTest {
         assertThat(posts).hasSize(1);
 
         posts = postService.search("", "내용");
-        assertThat(posts).hasSize(2);
+        assertThat(posts).hasSize(3);
 
         posts = postService.search("", "내용 2");
         assertThat(posts).hasSize(1);
@@ -145,7 +147,7 @@ public class PostServiceTest {
     @DisplayName("정렬된 게시물 조회 - 제목 오름차순")
     void t10() {
         List<Post> posts = postService.findAllOrdered("title", "asc");
-        assertThat(posts).hasSize(2);
+        assertThat(posts).hasSize(3);
         assertThat(posts.get(0).getTitle()).isEqualTo("제목 1");
         assertThat(posts.get(1).getTitle()).isEqualTo("제목 2");
     }
@@ -155,22 +157,22 @@ public class PostServiceTest {
     @DisplayName("정렬된 게시물 조회 - 제목 내림차순")
     void t11() {
         List<Post> posts = postService.findAllOrdered("title", "desc");
-        assertThat(posts).hasSize(2);
-        assertThat(posts.get(0).getTitle()).isEqualTo("제목 2");
-        assertThat(posts.get(1).getTitle()).isEqualTo("제목 1");
+        assertThat(posts).hasSize(3);
+        assertThat(posts.get(0).getTitle()).isEqualTo("제목 3");
+        assertThat(posts.get(1).getTitle()).isEqualTo("제목 2");
     }
 
     @Test
     @DisplayName("정렬된 게시물 조회 - 생성일 내림차순")
     void t12() {
-        postService.create("제목 0", "내용 0");
+        postService.create("제목 0", "내용 0", 3);
         List<Post> posts = postService.findAllOrdered("createDate", "desc");
         System.out.println(posts);
-        assertThat(posts).hasSize(3);
+        assertThat(posts).hasSize(4);
 
         assertThat(posts.get(0).getTitle()).isEqualTo("제목 0");
-        assertThat(posts.get(1).getTitle()).isEqualTo("제목 2");
-        assertThat(posts.get(2).getTitle()).isEqualTo("제목 1");
+        assertThat(posts.get(1).getTitle()).isEqualTo("제목 3");
+        assertThat(posts.get(2).getTitle()).isEqualTo("제목 2");
     }
 
     @Test
@@ -194,10 +196,10 @@ public class PostServiceTest {
     @DisplayName("다중 게시물 삭제")
     void t14() {
         // given: 추가 게시물 생성
-        int id3 = postService.create("제목 3", "내용 3");
-        int id4 = postService.create("제목 4", "내용 4");
+        int id3 = postService.create("제목 3", "내용 3", 3);
+        int id4 = postService.create("제목 4", "내용 4", 5);
         List<Post> addPosts = postService.findAll();
-        assertThat(addPosts).hasSize(4); // 기존 + 추가 4개
+        assertThat(addPosts).hasSize(6); // 기존 + 추가 4개
 
         // when: 다중 삭제
         int deletedCount = postService.deleteByIds(Arrays.asList(id3, id4));
@@ -205,6 +207,29 @@ public class PostServiceTest {
 
         // then: 삭제 확인
         List<Post> posts = postService.findAll();
-        assertThat(posts).hasSize(2); // 기존 2개만 남음
+        assertThat(posts).hasSize(4); // 기존 2개만 남음
+    }
+
+    @Test
+    @DisplayName("작성자 이름 포함 조회")
+    void t15() {
+        // given
+        Post post = postService.findByIdWithAuthorName(1);
+//        System.out.println(post);
+        // then
+        assertThat(post.getTitle()).isEqualTo("제목 1");
+        assertThat(post.getAuthorName()).isEqualTo("유저1");
+        assertThat(post.getMemberId()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("작성자 이름으로 검색")
+    void t16() {
+        // when
+        List<Post> posts = postService.searchWithAuthorName("author", "유저1");
+        // then
+        assertThat(posts).hasSize(1);
+        assertThat(posts.get(0).getAuthorName()).isEqualTo("유저1");
+        assertThat(posts.get(0).getTitle()).isEqualTo("제목 1");
     }
 }

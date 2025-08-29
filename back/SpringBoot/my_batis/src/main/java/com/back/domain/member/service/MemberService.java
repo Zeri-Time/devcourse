@@ -28,8 +28,6 @@ public class MemberService {
         Member member = new Member();
         member.setUsername(username);
         member.setPassword(password);
-        member.setName(name);
-        member.setEmail(email);
 
         memberRepository.save(member);
         return member.getId();
@@ -46,5 +44,16 @@ public class MemberService {
             throw new IllegalStateException("회원 정보 수정 실패");
         }
 
+    }
+
+    public List<Member> search(String kwType, String kw) {
+        return memberRepository.search(kwType, kw);
+    }
+
+    public int deleteByIds(List<Integer> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return 0;
+        }
+        return memberRepository.deleteByIds(ids);
     }
 }
