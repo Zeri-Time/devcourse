@@ -2,6 +2,7 @@ package com.back.domain.post.post;
 
 import com.back.domain.post.post.dto.Post;
 import com.back.domain.post.post.service.PostService;
+import com.back.domain.post.post.service.PostWithAuthorService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PostServiceTest {
     @Autowired
     private PostService postService;
+    @Autowired
+    private PostWithAuthorService postWithAuthorService;
 
     @Test
     @DisplayName("게시물 다건 조회")
@@ -232,4 +235,5 @@ public class PostServiceTest {
         assertThat(posts.get(0).getAuthorName()).isEqualTo("유저1");
         assertThat(posts.get(0).getTitle()).isEqualTo("제목 1");
     }
+
 }

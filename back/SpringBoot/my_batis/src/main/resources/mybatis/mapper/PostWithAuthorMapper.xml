@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.back.domain.post.post.repository.PostWithAuthorRepository">
+    <!-- Post와 Member 조인을 위한 ResultMap -->
+    <resultMap id="PostWithAuthorResultMap" type="PostWithAuthor">
+        <!-- Post 필드 매핑 -->
+        <id property="id" column="post_id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="memberId" column="memberId"/>
+        <result property="createDate" column="post_createDate"/>
+        <result property="modifyDate" column="post_modifyDate"/>
+
+        <!-- 중첩 객체 매핑 (핵심!) -->
+        <association property="author" javaType="Member">
+            <id property="id" column="author_id"/>
+            <result property="username" column="username"/>
+            <result property="name" column="name"/>
+            <result property="email" column="email"/>
+            <result property="createDate" column="author_createDate"/>
+            <result property="modifyDate" column="author_modifyDate"/>
+            <!-- password는 보안상 제외 -->
+        </association>
+    </resultMap>
+
+    <select id="findAllWithAuthor" resultMap="PostWithAuthorResultMap">
+        SELECT
+            P.id as post_id,
+            P.title,
+            P.content,
+            P.memberId,
+            P.createDate as post_createDate,
+            P.modifyDate as post_modifyDate,
+            M.id as author_id,
+            M.username,
+            M.name,
+            M.email,
+            M.createDate as author_createDate,
+            M.modifyDate as author_modifyDate
+        FROM post P
+                 LEFT JOIN member M
+                           ON P.memberId = M.id
+    </select>
+
+    <select id="findByIdWithAuthor" resultMap="PostWithAuthorResultMap">
+        SELECT
+            P.id as post_id,
+            P.title,
+            P.content,
+            P.memberId,
+            P.createDate as post_createDate,
+            P.modifyDate as post_modifyDate,
+            M.id as author_id,
+            M.username,
+            M.name,
+            M.email,
+            M.createDate as author_createDate,
+            M.modifyDate as author_modifyDate
+        FROM post P
+                 LEFT JOIN member M
+                           ON P.memberId = M.id
+        WHERE
+            P.id = #{id}
+
+    </select>
+
+
+</mapper>
