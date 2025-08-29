@@ -14,11 +14,16 @@ public class NeedToLogInInterceptor implements HandlerInterceptor {
         log.debug("BeforeActionInterceptor::preHandle 실행됨");
 
         boolean isLoggedIn = false;
+//        boolean isLoggedIn = true;
+
 
         // 비회원 접근 경로
         if (isLoggedIn == false) {
+            // 한글 세팅
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/html;charset=UTF-8");
+
+            // 인터셉터 작동 시 표시할 내용
             response.getWriter().append("로그인 후 이용 바람");
 
             return false;

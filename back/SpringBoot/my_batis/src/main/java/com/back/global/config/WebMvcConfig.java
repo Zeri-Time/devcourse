@@ -10,6 +10,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @RequiredArgsConstructor
+
+// 여기서 인터셉터 모두 관리
+// 작동/제외 경로 입력
+// 인터셉터 연결
 public class WebMvcConfig implements WebMvcConfigurer {
     private final BeforeActionInterceptor beforeActionInterceptor;
     private final NeedToLogInInterceptor needToLogInInterceptor;
