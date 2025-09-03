@@ -38,7 +38,8 @@ public class ArticleController {
 
         if (!rq.isLogined()) {
             rq.replace("게시글 작성은 회원만 할 수 있습니다.", "/usr/article/list");
-        };
+        }
+        ;
 
         String title = rq.getParam("title", "");
 
@@ -88,7 +89,7 @@ public class ArticleController {
             return;
         }
 
-        Article article  = articleService.findById(id);
+        Article article = articleService.findById(id);
 
 
         if (article == null) {

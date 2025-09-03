@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c89ec57b-00cd-4c96-8dda-0aa4005c14c9" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/zt/sbb/AnswerRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Spring/demo/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../../Spring/demo/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Spring/demo/src/main/java/com/example/demo/Answer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Spring/demo/src/main/java/com/example/demo/Answer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../Spring/demo/src/main/java/com/example/demo/AnswerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Spring/demo/src/main/java/com/example/demo/AnswerRepository.java" afterDir="false" />
@@ -24,6 +23,8 @@
       <change beforePath="$PROJECT_DIR$/../../Spring/ico-clone/src/test/java/com/zt/framework/ioc/ApplicationContextTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../Spring/ico-clone/src/test/java/com/zt/framework/ioc/ApplicationContextTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/zt/sbb/QuestionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/zt/sbb/QuestionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/zt/sbb/SbbApplicationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/zt/sbb/SbbApplicationTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../TDD/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../TDD/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../TDD/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/../../TDD/build.gradle.kts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../TDD/src/main/java/com/ll/Rq.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../TDD/src/main/java/com/ll/Rq.java" afterDir="false" />
@@ -131,9 +132,13 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Gradle.SbbApplicationTest.executor": "Run",
+    "Gradle.SbbApplicationTest.testJpa.executor": "Run",
     "Gradle.sbb [:com.zt.sbb.HelloLombok.main()].executor": "Run",
     "Gradle.sbb 빌드.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Notification.DisplayName-DoNotAsk-DatabaseConfigFileWatcher.found": "새/업데이트된 데이터베이스 구성이 발견되었습니다",
+    "Notification.DoNotAsk-DatabaseConfigFileWatcher.found": "true",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
     "RequestMappingsPanelWidth0": "75",
@@ -150,11 +155,11 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "File.Encoding",
+    "settings.editor.selected.configurable": "preferences.keymap",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Spring Boot.SbbApplication">
+  <component name="RunManager" selected="Gradle.SbbApplicationTest.testJpa">
     <configuration name="HelloLombok" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.zt.sbb.HelloLombok" />
       <module name="sbb.main" />
@@ -168,6 +173,54 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="SbbApplicationTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;com.zt.sbb.SbbApplicationTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="SbbApplicationTest.testJpa" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;com.zt.sbb.SbbApplicationTest.testJpa&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>true</RunAsTest>
+      <method v="2" />
+    </configuration>
     <configuration name="SbbApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
       <module name="sbb.main" />
@@ -178,6 +231,8 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.SbbApplicationTest.testJpa" />
+        <item itemvalue="Gradle.SbbApplicationTest" />
         <item itemvalue="애플리케이션.HelloLombok" />
       </list>
     </recent_temporary>
@@ -198,7 +253,9 @@
       <option name="presentableId" value="Default" />
       <updated>1755564938498</updated>
       <workItem from="1755564939644" duration="2075000" />
-      <workItem from="1755567053956" duration="12246000" />
+      <workItem from="1755567053956" duration="16289000" />
+      <workItem from="1755648565231" duration="3819000" />
+      <workItem from="1755652714286" duration="3489000" />
     </task>
     <servers />
   </component>

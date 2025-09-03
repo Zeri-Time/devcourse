@@ -1,1 +1,0 @@
-rootProject.name = "devcourse-jave-01"

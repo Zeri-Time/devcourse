@@ -14,7 +14,6 @@ export function useNameList(initialNames = []) {
 
   const handleClick = () => {
     if (input.trim() !== '') {
-      // 삭제 후에도 id가 겹치지 않도록 현재 id 중 가장 큰 값에 1을 더합니다.
       const newId = name.length > 0 ? Math.max(...name.map((n) => n.id)) + 1 : 1
       setName([...name, { id: newId, value: input }])
       setInput('')
@@ -53,7 +52,7 @@ export function useNameList(initialNames = []) {
     setEditText('')
   }
 
-  // 컴포넌트에서 사용할 상태와 함수들을 객체로 묶어 반환합니다.
+  // 컴포넌트에서 사용할 상태와 함수들을 객체로 묶어 반환
   return {
     name,
     input,

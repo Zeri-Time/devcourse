@@ -57,6 +57,7 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     // 레포지터리를 이용하여 데이터를 저장하려면 정보를 저장하는 컨트롤러, 서비스 파일 등이 필요.
     // JUnit을 사용하면 레포지터리만 개별적으로 실행해 테스트 가능
+
 }
 
 tasks.withType<Test> {

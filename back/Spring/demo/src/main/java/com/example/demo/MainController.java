@@ -6,15 +6,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class MainController {
-    @ResponseBody
+
     @GetMapping("/")
+    @ResponseBody
     public String index() {
-        return "demo";
+        return "sbb";
     }
 
-    @ResponseBody
     @GetMapping("/hello")
+    @ResponseBody
     public String hello() {
-        return "hello";
+        return "안녕하세요.";
     }
 }

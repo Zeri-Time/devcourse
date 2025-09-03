@@ -1,4 +1,4 @@
 package com.zt.framework.annotations;
 
-public class Service {
+public @interface Service {
 }
