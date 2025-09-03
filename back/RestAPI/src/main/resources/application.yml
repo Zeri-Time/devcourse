@@ -9,6 +9,12 @@ spring:
   datasource:
     hikari:
       auto-commit: false
+
+# Dto? @Getter? ??? blank ?????(??? ?? ??)
+  jackson:
+     serialization:
+       fail-on-empty-beans: false
+
   jpa:
     show-sql: true
     hibernate:
