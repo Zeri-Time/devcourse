@@ -1,7 +1,21 @@
-<h3>[[${post.id}]] 번</h3>
-<h2>[[${post.title}]]</h2>
-<p>[[${post.content}]]</p>
+<html layout:decorate="~{/common/layout/layout}">
+<div layout:fragment="content">
+    <h3>[[${post.id}]] 번</h3>
+    <h2>[[${post.title}]]</h2>
+    <p>[[${post.content}]]</p>
 
-<div>
-    <a href="/posts/list">글 목록</a>
+    <div>
+        <a href="/posts/list">글 목록</a>
+    </div>
+    <form sec:authorize="isAuthenticated()"
+          th:if="${#authentication.name == post.author.username}"
+          th:action="@{|/posts/delete/${post.id}|}"
+          method="post">
+        <button type="submit">삭제</button>
+    </form>
+    <a th:href="@{|/posts/modify/${post.id}|}"
+       sec:authorize="isAuthenticated()"
+       th:if="${#authentication.name == post.author.username}"
+    >수정</a>
 </div>
+</html>

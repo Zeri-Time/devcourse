@@ -1,0 +1,12 @@
+<html layout:decorate="~{/common/layout/layout}">
+<form layout:fragment="content" th:action="@{/members/login}" th:object="${loginForm}" method="POST">
+    <div th:replace="~{/common/fragment/errors :: errosFragment}"></div>
+    <label for="username">아이디</label>
+    <input type="text" th:field="*{username}">
+    <br>
+    <label for="password">패스워드</label>
+    <input type="password" th:field="*{password}">
+    <br>
+    <input type="submit" />
+</form>
+</html>

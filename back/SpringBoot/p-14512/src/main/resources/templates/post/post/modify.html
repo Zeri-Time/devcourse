@@ -1,13 +1,16 @@
 <html layout:decorate="~{/common/layout/layout}">
-<form layout:fragment="content" th:action="@{/posts/write}" method="POST" th:object="${form}">
+<form layout:fragment="content" method="POST"
+      th:action="@{|/posts/modify/${id}|}"
+      th:object="${modifyForm}">
+    <!--    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">-->
+
+
     <div th:replace="~{/common/fragment/errors :: errosFragment}"></div>
     <label for="title">제목</label>
-    <!--    <input type="text" id="title" name="title" th:value="*{title}" placeholder="제목" autofocus>-->
     <input type="text" th:field="*{title}" placeholder="제목" autofocus>
 
     <br>
     <label for="content">제목</label>
-    <!--    <textarea id="content" name="content" th:text="*{content}" placeholder="내용"  ></textarea>-->
     <textarea th:field="*{content}" placeholder="내용"  ></textarea>
     <br>
     <input type="submit" value="작성">
