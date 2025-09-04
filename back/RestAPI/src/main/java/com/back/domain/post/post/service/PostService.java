@@ -13,6 +13,12 @@ import java.util.List;
 public class PostService {
     private final PostRepository postRepository;
 
+//    public Post findByTitle(String title) {
+//        return postRepository.findByTitle(title).orElseThrow(
+//                () -> new RuntimeException("게시글이 존재하지 않습니다.")
+//        );
+//    }
+
     public long count() {
         return postRepository.count();
     }
@@ -31,7 +37,7 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public Post getPost(Long id) {
+    public Post findById(Long id) {
         return postRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("게시글이 존재하지 않습니다.")
         );
@@ -54,5 +60,9 @@ public class PostService {
     public void modify(PostComment postComment, String content) {
         // 자식 엔티티(PostComment)의 필드 변경 → 더티 체킹에 의해 UPDATE 실행
         postComment.modify(content);
+    }
+
+    public void delete(Post post) {
+        postRepository.delete(post);
     }
 }
