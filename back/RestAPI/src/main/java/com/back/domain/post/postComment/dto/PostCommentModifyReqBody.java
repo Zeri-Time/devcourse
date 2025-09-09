@@ -1,13 +1,12 @@
-package com.back.domain.post.post.dto;
+
+package com.back.domain.post.postComment.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record PostWriteReqBody(
-        @NotBlank
-        @Size(min = 2, max = 100)
-        String title,
+public record PostCommentModifyReqBody (
         @NotBlank
         @Size(min = 2, max = 100)
         String content
-){}
+) {
+}

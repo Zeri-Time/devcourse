@@ -1,8 +1,9 @@
+
 package com.back.domain.post.post.controller;
 
 import com.back.domain.post.post.dto.PostDto;
+import com.back.domain.post.post.dto.PostModifyReqBody;
 import com.back.domain.post.post.dto.PostWriteReqBody;
-import com.back.domain.post.post.dto.PostWriteResBody;
 import com.back.domain.post.post.entity.Post;
 import com.back.domain.post.post.service.PostService;
 import com.back.global.rsData.RsData;
@@ -50,14 +51,29 @@ public class ApiV1PostController {
 
     @PostMapping
     @Transactional
-    public RsData<PostWriteResBody> write(@Valid @RequestBody PostWriteReqBody form) {
-        Post post = postService.create(form.title(), form.content());
+    public RsData<PostDto> write(@Valid @RequestBody PostWriteReqBody reqBody) {
+        Post post = postService.create(reqBody.title(), reqBody.content());
 
 
         return new RsData<>(
+                "201-1",
+                "%d번 게시글이 생성되었습니다.".formatted(post.getId()),
+                new PostDto(post)
+        );
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public RsData<Void> modify(
+            @PathVariable long id,
+            @Valid @RequestBody PostModifyReqBody reqBody
+    ) {
+        Post post = postService.findById(id);
+        postService.update(post, reqBody.title(), reqBody.content());
+
+        return new RsData<>(
                 "200-1",
-                "%d번 게시글이 작성되었습니다.".formatted(post.getId()),
-                new PostWriteResBody(postService.count(), new PostDto(post))
+                "%d번 게시글이 수정되었습니다.".formatted(id)
         );
     }
 }
