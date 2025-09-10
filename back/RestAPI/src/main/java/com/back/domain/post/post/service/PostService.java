@@ -1,4 +1,3 @@
-
 package com.back.domain.post.post.service;
 
 import com.back.domain.post.post.entity.Post;
@@ -16,9 +15,7 @@ public class PostService {
     private final PostRepository postRepository;
 
     public Post findByTitle(String title) {
-        return postRepository.findByTitle(title).orElseThrow(
-                () -> new RuntimeException("게시글이 존재하지 않습니다.")
-        );
+        return postRepository.findByTitle(title).get();
     }
 
     public long count() {
@@ -40,9 +37,7 @@ public class PostService {
     }
 
     public Post findById(Long id) {
-        return postRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("게시글이 존재하지 않습니다.")
-        );
+        return postRepository.findById(id).get();
     }
 
     public void createComment(Post post, String content) {
@@ -70,5 +65,13 @@ public class PostService {
 
     public Optional<Post> findLatest() {
         return postRepository.findFirstByOrderByIdDesc();
+    }
+
+    public PostComment writeComment(Post post, String content) {
+        return post.addComment(content);
+    }
+
+    public void flush(){
+        postRepository.flush();
     }
 }

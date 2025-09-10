@@ -139,7 +139,7 @@ public class ApiV1PostControllerTest {
                                 .content("""
                                         {
                                             "title": "제목",
-                                            content": "내용"
+                                            "content": "내용"
                                         }
                                         """)
                 )

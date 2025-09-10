@@ -1,10 +1,10 @@
-
 package com.back.domain.post.postComment.controller;
 
 import com.back.domain.post.post.entity.Post;
 import com.back.domain.post.post.service.PostService;
 import com.back.domain.post.postComment.dto.PostCommentDto;
 import com.back.domain.post.postComment.dto.PostCommentModifyReqBody;
+import com.back.domain.post.postComment.dto.PostCommentWriteReqBody;
 import com.back.domain.post.postComment.entity.PostComment;
 import com.back.global.rsData.RsData;
 import jakarta.validation.Valid;
@@ -81,4 +81,23 @@ public class ApiV1PostCommentController {
         );
     }
 
+    @Transactional
+    @PostMapping
+    public RsData<PostCommentDto> write(
+            @PathVariable long postId,
+            @Valid @RequestBody PostCommentWriteReqBody reqBody
+    ) {
+        Post post = postService.findById(postId);
+
+        PostComment postComment = postService.writeComment(post, reqBody.content());
+
+        // 트렌잭션 끝난 후 수행되야 하는 더티체킹 및 여가지 작업들을 지금 당장 수행시킴
+        postService.flush();
+
+        return new RsData<>(
+                "201-1",
+                "%d번 댓글이 작성되었습니다.".formatted(postComment.getId()),
+                new PostCommentDto(postComment)
+        );
+    }
 }
