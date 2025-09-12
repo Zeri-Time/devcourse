@@ -75,6 +75,18 @@ export default function Page({ params }: { params: Promise<{ id: number }> }) {
                 </Link>
             </div>
 
+            <h2>댓글 작성</h2>
+            <form className="flex flex-col gap-2 p-2">
+                <textarea
+                    className="border p-2 rounded"
+                    name="content"
+                    placeholder="댓글 내용"
+                />
+                <button className="border p-2 rounded" type="submit">
+                    저장
+                </button>
+            </form>
+
             <h2>댓글 목록</h2>
 
             {postComments === null && <div>댓글이 로딩중...</div>}
