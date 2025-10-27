@@ -60,6 +60,11 @@ override.tf.json
 .vault
 .secret
 
+# Backup files
+*_backup.*
+*.backup
+*.bak
+
 # Optional: local dev files
 .local.env
 
