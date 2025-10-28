@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Message {
   id: number;
@@ -17,11 +17,16 @@ interface Feedback {
   timestamp: Date;
 }
 
+interface ConversationHistory {
+  role: "user" | "model";
+  parts: Array<{ text: string }>;
+}
+
 export default function FreeChatPage() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      text: "Hello! I'm your AI English tutor. Feel free to chat with me in English, or type Korean words when you don't know the English equivalent!",
+      text: "Hello! I'm your AI English tutor. Feel free to mix Korean and English in your messages - I'll automatically translate any Korean words to English when you send!",
       sender: "ai",
       timestamp: new Date(),
     },
@@ -30,76 +35,129 @@ export default function FreeChatPage() {
   const [isTranslating, setIsTranslating] = useState(false);
   const [feedbackList, setFeedbackList] = useState<Feedback[]>([]);
   const [isGettingFeedback, setIsGettingFeedback] = useState(false);
+  const [isSendingMessage, setIsSendingMessage] = useState(false);
+  const [conversationHistory, setConversationHistory] = useState<
+    ConversationHistory[]
+  >([]);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
-  // Mock translation function - would connect to real translation API
-  const translateKoreanToEnglish = async (text: string) => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // Simple mock translation (in real app, this would use actual translation service)
-    const koreanWords: { [key: string]: string } = {
-      안녕하세요: "hello",
-      감사합니다: "thank you",
-      도서관: "library",
-      학교: "school",
-      음식: "food",
-      물: "water",
-      책: "book",
-    };
-
-    let translatedText = text;
-    let translatedWords: string[] = [];
-
-    Object.entries(koreanWords).forEach(([korean, english]) => {
-      if (text.includes(korean)) {
-        translatedText = translatedText.replace(korean, english);
-        translatedWords.push(`${korean} → ${english}`);
-      }
-    });
-
-    return { translatedText, translatedWords };
+  const scrollToBottom = () => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight;
+    }
   };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const sendMessage = async () => {
     if (!inputText.trim()) return;
 
+    const currentInput = inputText;
+    setInputText(""); // Clear input immediately
     setIsTranslating(true);
+    setIsSendingMessage(true);
 
-    // Check if message contains Korean and translate
-    const { translatedText, translatedWords } = await translateKoreanToEnglish(
-      inputText
-    );
-
-    // Add user message
-    const userMessage: Message = {
-      id: Date.now(),
-      text: translatedText,
+    // Add user message immediately (with original text for now)
+    const tempUserMessageId = Date.now();
+    const tempUserMessage: Message = {
+      id: tempUserMessageId,
+      text: currentInput,
       sender: "user",
       timestamp: new Date(),
-      originalText: translatedText !== inputText ? inputText : undefined,
     };
 
-    setMessages((prev) => [...prev, userMessage]);
+    setMessages((prev) => [...prev, tempUserMessage]);
 
-    // Mock AI response
-    setTimeout(() => {
-      const aiResponse: Message = {
-        id: Date.now() + 1,
-        text: `Great! I understood your message. ${
-          translatedWords.length > 0
-            ? `I helped translate: ${translatedWords.join(
-                ", "
-              )}. These words have been added to your learning notes!`
-            : ""
+    try {
+      // Check if translation is needed
+      const hasKorean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(currentInput);
+
+      // Call unified Chat API with translation capability
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: currentInput,
+          conversationHistory,
+          needsTranslation: hasKorean,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.error || `API request failed with status ${response.status}`
+        );
+      }
+
+      const data = await response.json();
+
+      // Update user message with translated text if available
+      const finalUserText = data.translatedMessage || currentInput;
+
+      const updatedUserMessage: Message = {
+        id: tempUserMessageId,
+        text: finalUserText,
+        sender: "user",
+        timestamp: new Date(),
+        originalText:
+          data.translatedMessage && data.translatedMessage !== currentInput
+            ? currentInput
+            : undefined,
+      };
+
+      // Add actual AI response
+      const finalAiResponse: Message = {
+        id: Date.now() + 2,
+        text: data.message,
+        sender: "ai",
+        timestamp: new Date(),
+      };
+
+      // Update messages: replace temp user message and add AI response
+      setMessages((prev) => {
+        const updatedMessages = prev.map((msg) => {
+          if (msg.id === tempUserMessageId) return updatedUserMessage;
+          return msg;
+        });
+        return [...updatedMessages, finalAiResponse];
+      });
+
+      // Update conversation history
+      const newUserEntry: ConversationHistory = {
+        role: "user",
+        parts: [{ text: finalUserText }],
+      };
+
+      const newAiEntry: ConversationHistory = {
+        role: "model",
+        parts: [{ text: data.message }],
+      };
+
+      setConversationHistory((prev) => [...prev, newUserEntry, newAiEntry]);
+    } catch (error) {
+      console.error("Failed to send message:", error);
+
+      // Add error message
+      const errorMessage: Message = {
+        id: Date.now() + 2,
+        text: `Sorry, I'm having trouble connecting right now. ${
+          error instanceof Error ? error.message : "Please try again later."
         }`,
         sender: "ai",
         timestamp: new Date(),
       };
-      setMessages((prev) => [...prev, aiResponse]);
-    }, 500);
 
-    setInputText("");
-    setIsTranslating(false);
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsTranslating(false);
+      setIsSendingMessage(false);
+    }
   };
 
   const getFeedback = async () => {
@@ -107,35 +165,81 @@ export default function FreeChatPage() {
 
     setIsGettingFeedback(true);
 
-    // Simulate AI analysis of conversation
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    try {
+      // Get the last few user messages for analysis
+      const userMessages = messages
+        .filter((msg) => msg.sender === "user")
+        .slice(-3) // Analyze last 3 messages
+        .map((msg) => msg.text)
+        .join(" ");
 
-    const mockFeedbacks: Feedback[] = [
-      {
+      if (!userMessages.trim()) {
+        setIsGettingFeedback(false);
+        return;
+      }
+
+      // Call Gemini API for feedback
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: userMessages,
+          type: "feedback",
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `Feedback request failed with status ${response.status}`
+        );
+      }
+
+      const data = await response.json();
+
+      // Parse the feedback from the API response
+      if (data.feedback && Array.isArray(data.feedback)) {
+        const newFeedbacks: Feedback[] = data.feedback.map(
+          (fb: any, index: number) => ({
+            id: Date.now() + index,
+            type: fb.type || "general",
+            message: fb.message || fb.text || "No specific feedback available.",
+            timestamp: new Date(),
+          })
+        );
+
+        setFeedbackList((prev) => [...newFeedbacks, ...prev]);
+      } else {
+        // Fallback if feedback format is unexpected
+        const fallbackFeedback: Feedback = {
+          id: Date.now(),
+          type: "general",
+          message:
+            typeof data.feedback === "string"
+              ? data.feedback
+              : "Keep practicing! Your English is improving.",
+          timestamp: new Date(),
+        };
+
+        setFeedbackList((prev) => [fallbackFeedback, ...prev]);
+      }
+    } catch (error) {
+      console.error("Failed to get feedback:", error);
+
+      // Add error feedback
+      const errorFeedback: Feedback = {
         id: Date.now(),
-        type: "grammar",
-        message:
-          "Consider using 'I have been learning' instead of 'I am learning' when talking about ongoing activities that started in the past.",
-        timestamp: new Date(),
-      },
-      {
-        id: Date.now() + 1,
-        type: "vocabulary",
-        message:
-          "Great use of vocabulary! Try using synonyms like 'fascinating' or 'intriguing' instead of always saying 'interesting'.",
-        timestamp: new Date(),
-      },
-      {
-        id: Date.now() + 2,
         type: "general",
         message:
-          "Your conversation flow is natural! Keep practicing expressing your opinions with phrases like 'In my opinion' or 'I believe that'.",
+          "Unable to generate feedback at the moment. Please try again later.",
         timestamp: new Date(),
-      },
-    ];
+      };
 
-    setFeedbackList((prev) => [...mockFeedbacks, ...prev]);
-    setIsGettingFeedback(false);
+      setFeedbackList((prev) => [errorFeedback, ...prev]);
+    } finally {
+      setIsGettingFeedback(false);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -201,6 +305,7 @@ export default function FreeChatPage() {
 
         {/* Messages */}
         <div
+          ref={messagesContainerRef}
           className="flex-1 overflow-y-auto p-4 space-y-4 min-h-0"
           style={{
             maxHeight: "calc(100vh - 220px)",
@@ -227,13 +332,37 @@ export default function FreeChatPage() {
                     Original: {message.originalText}
                   </div>
                 )}
-                <p>{message.text}</p>
+                <p className="whitespace-pre-wrap">{message.text}</p>
                 <p className="text-xs mt-1 opacity-75">
                   {message.timestamp.toLocaleTimeString()}
                 </p>
               </div>
             </div>
           ))}
+
+          {/* Loading indicator */}
+          {isSendingMessage && (
+            <div className="flex justify-start">
+              <div className="max-w-xs lg:max-w-md px-4 py-2 rounded-lg bg-gray-700 text-gray-200 shadow-sm border border-gray-600">
+                <div className="flex items-center space-x-2">
+                  <div className="flex space-x-1">
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                    <div
+                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      style={{ animationDelay: "0.1s" }}
+                    ></div>
+                    <div
+                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      style={{ animationDelay: "0.2s" }}
+                    ></div>
+                  </div>
+                  <span className="text-sm text-gray-400">
+                    AI is thinking...
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Input */}
@@ -243,11 +372,11 @@ export default function FreeChatPage() {
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Type your message... (You can mix Korean and English!)"
+              placeholder="Type your message... (Mix Korean and English! AI will translate Korean words automatically)"
               className="flex-1 border border-gray-600 bg-gray-800 text-white rounded-lg px-4 py-3 resize-none focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm placeholder-gray-400 overflow-hidden"
               rows={2}
               style={{ minHeight: "60px", maxHeight: "120px", height: "auto" }}
-              disabled={isTranslating}
+              disabled={isSendingMessage}
               onInput={(e) => {
                 const target = e.target as HTMLTextAreaElement;
                 target.style.height = "60px";
@@ -256,15 +385,20 @@ export default function FreeChatPage() {
             />
             <button
               onClick={sendMessage}
-              disabled={!inputText.trim() || isTranslating}
+              disabled={!inputText.trim() || isTranslating || isSendingMessage}
               className="bg-emerald-600 text-white px-6 py-3 rounded-lg hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium"
               style={{ minHeight: "60px" }}
             >
-              {isTranslating ? "..." : "Send"}
+              {isTranslating
+                ? "Translating..."
+                : isSendingMessage
+                ? "Thinking..."
+                : "Send"}
             </button>
           </div>
           <p className="text-xs text-gray-300 mt-2">
-            Tip: Press Enter to send, Shift+Enter for new line
+            Tip: Mix Korean and English freely! AI will translate any Korean
+            words when you send. Press Enter to send, Shift+Enter for new line
           </p>
         </div>
       </div>
