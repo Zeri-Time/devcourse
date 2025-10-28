@@ -8,6 +8,7 @@ interface Message {
   sender: "user" | "ai";
   timestamp: Date;
   originalText?: string; // For Korean input before translation
+  isSaved?: boolean; // Track if sentence is saved to learning notes
 }
 
 interface Feedback {
@@ -40,6 +41,9 @@ export default function FreeChatPage() {
     ConversationHistory[]
   >([]);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const [expandedMessages, setExpandedMessages] = useState<Set<number>>(
+    new Set()
+  );
 
   const scrollToBottom = () => {
     if (messagesContainerRef.current) {
@@ -51,6 +55,65 @@ export default function FreeChatPage() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  const toggleMessageExpansion = (messageId: number) => {
+    setExpandedMessages((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(messageId)) {
+        newSet.delete(messageId);
+      } else {
+        newSet.add(messageId);
+      }
+      return newSet;
+    });
+  };
+
+  const saveSentenceToLearningNotes = async (message: Message) => {
+    if (!message.originalText) return;
+
+    try {
+      const sentenceData = {
+        id: Date.now(),
+        originalText: message.originalText,
+        translatedText: message.text,
+        timestamp: message.timestamp.toISOString(),
+        type: "sentence" as const,
+      };
+
+      // Get existing learning notes
+      const existingNotes = localStorage.getItem("learningNotes");
+      const notes = existingNotes
+        ? JSON.parse(existingNotes)
+        : { words: [], sentences: [] };
+
+      // Add new sentence if not already exists
+      const exists = notes.sentences?.some(
+        (s: any) =>
+          s.originalText === sentenceData.originalText &&
+          s.translatedText === sentenceData.translatedText
+      );
+
+      if (!exists) {
+        if (!notes.sentences) notes.sentences = [];
+        notes.sentences.push(sentenceData);
+        localStorage.setItem("learningNotes", JSON.stringify(notes));
+
+        // Update message as saved
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.id === message.id ? { ...msg, isSaved: true } : msg
+          )
+        );
+
+        alert("문장이 학습노트에 저장되었습니다!");
+      } else {
+        alert("이미 저장된 문장입니다.");
+      }
+    } catch (error) {
+      console.error("Failed to save sentence:", error);
+      alert("문장 저장에 실패했습니다.");
+    }
+  };
 
   const sendMessage = async () => {
     if (!inputText.trim()) return;
@@ -321,21 +384,84 @@ export default function FreeChatPage() {
               }`}
             >
               <div
-                className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                className={`max-w-xs lg:max-w-md ${
                   message.sender === "user"
                     ? "bg-emerald-600 text-white"
                     : "bg-gray-700 text-gray-200 shadow-sm border border-gray-600"
-                }`}
+                } rounded-lg overflow-hidden`}
               >
-                {message.originalText && (
-                  <div className="text-xs opacity-75 mb-1">
-                    Original: {message.originalText}
+                {/* Main message content */}
+                <div className="px-4 py-2">
+                  <p className="whitespace-pre-wrap">{message.text}</p>
+                  <p className="text-xs mt-1 opacity-75">
+                    {message.timestamp.toLocaleTimeString()}
+                  </p>
+                </div>
+
+                {/* Dropdown toggle for user messages with originalText */}
+                {message.sender === "user" && message.originalText && (
+                  <div className="px-4 pb-2">
+                    <button
+                      onClick={() => toggleMessageExpansion(message.id)}
+                      className="text-xs opacity-75 hover:opacity-100 transition-opacity flex items-center space-x-1"
+                    >
+                      <span>Show details</span>
+                      <svg
+                        className={`w-3 h-3 transform transition-transform ${
+                          expandedMessages.has(message.id) ? "rotate-180" : ""
+                        }`}
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
                   </div>
                 )}
-                <p className="whitespace-pre-wrap">{message.text}</p>
-                <p className="text-xs mt-1 opacity-75">
-                  {message.timestamp.toLocaleTimeString()}
-                </p>
+
+                {/* Expanded content */}
+                {expandedMessages.has(message.id) && message.originalText && (
+                  <div className="px-4 pb-3 pt-1 border-t border-emerald-500 bg-emerald-700">
+                    <div className="space-y-3">
+                      <div>
+                        <p className="text-xs font-semibold opacity-90 mb-1">
+                          Original sentence:
+                        </p>
+                        <p className="text-sm opacity-80 bg-emerald-800 px-2 py-1 rounded">
+                          {message.originalText}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold opacity-90 mb-1">
+                          Translated sentence:
+                        </p>
+                        <p className="text-sm opacity-80 bg-emerald-800 px-2 py-1 rounded">
+                          {message.text}
+                        </p>
+                      </div>
+
+                      <div className="pt-2">
+                        <button
+                          onClick={() => saveSentenceToLearningNotes(message)}
+                          disabled={message.isSaved}
+                          className={`text-xs px-3 py-1 rounded transition-colors ${
+                            message.isSaved
+                              ? "bg-gray-600 text-gray-400 cursor-not-allowed"
+                              : "bg-emerald-800 hover:bg-emerald-900 text-white"
+                          }`}
+                        >
+                          {message.isSaved
+                            ? "✓ Saved"
+                            : "Save to Learning Notes"}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           ))}
