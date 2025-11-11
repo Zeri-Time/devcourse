@@ -8,7 +8,30 @@ interface Message {
   sender: "user" | "ai";
   timestamp: Date;
   originalText?: string; // For Korean input before translation
-  isSaved?: boolean; // Track if sentence is saved to learning notes
+  analysis?: AnalysisResult; // AI analysis of the message
+}
+
+interface AnalysisResult {
+  hasErrors: boolean;
+  grammarErrors: GrammarError[];
+  vocabularyIssues: VocabularyIssue[];
+  suggestions: string[];
+}
+
+interface GrammarError {
+  id: string;
+  error: string;
+  correction: string;
+  explanation: string;
+  category: string; // e.g., "tense", "article", "subject-verb agreement"
+}
+
+interface VocabularyIssue {
+  id: string;
+  word: string;
+  suggestion: string;
+  meaning: string;
+  example: string;
 }
 
 interface Feedback {
@@ -68,50 +91,91 @@ export default function FreeChatPage() {
     });
   };
 
-  const saveSentenceToLearningNotes = async (message: Message) => {
-    if (!message.originalText) return;
-
+  const analyzeUserMessage = async (
+    originalText: string,
+    translatedText: string
+  ): Promise<AnalysisResult> => {
     try {
-      const sentenceData = {
-        id: Date.now(),
-        originalText: message.originalText,
-        translatedText: message.text,
-        timestamp: message.timestamp.toISOString(),
-        type: "sentence" as const,
-      };
+      const response = await fetch("/api/analyze", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          originalText,
+          translatedText,
+        }),
+      });
 
+      if (!response.ok) {
+        throw new Error("Analysis failed");
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error("Failed to analyze message:", error);
+      return {
+        hasErrors: false,
+        grammarErrors: [],
+        vocabularyIssues: [],
+        suggestions: [],
+      };
+    }
+  };
+
+  const saveFeedbackToLearningNotes = async (
+    analysis: AnalysisResult,
+    originalText: string,
+    translatedText: string
+  ) => {
+    try {
       // Get existing learning notes
       const existingNotes = localStorage.getItem("learningNotes");
       const notes = existingNotes
         ? JSON.parse(existingNotes)
-        : { words: [], sentences: [] };
+        : { grammar: [], vocabulary: [], sentences: [] };
 
-      // Add new sentence if not already exists
-      const exists = notes.sentences?.some(
-        (s: any) =>
-          s.originalText === sentenceData.originalText &&
-          s.translatedText === sentenceData.translatedText
-      );
-
-      if (!exists) {
-        if (!notes.sentences) notes.sentences = [];
-        notes.sentences.push(sentenceData);
-        localStorage.setItem("learningNotes", JSON.stringify(notes));
-
-        // Update message as saved
-        setMessages((prev) =>
-          prev.map((msg) =>
-            msg.id === message.id ? { ...msg, isSaved: true } : msg
-          )
-        );
-
-        alert("문장이 학습노트에 저장되었습니다!");
-      } else {
-        alert("이미 저장된 문장입니다.");
+      // Save grammar errors
+      if (analysis.grammarErrors.length > 0) {
+        if (!notes.grammar) notes.grammar = [];
+        analysis.grammarErrors.forEach((error) => {
+          const grammarFeedback = {
+            id: Date.now() + Math.random(),
+            originalText,
+            translatedText,
+            error: error.error,
+            correction: error.correction,
+            explanation: error.explanation,
+            category: error.category,
+            timestamp: new Date().toISOString(),
+            type: "grammar" as const,
+          };
+          notes.grammar.push(grammarFeedback);
+        });
       }
+
+      // Save vocabulary issues
+      if (analysis.vocabularyIssues.length > 0) {
+        if (!notes.vocabulary) notes.vocabulary = [];
+        analysis.vocabularyIssues.forEach((issue) => {
+          const vocabularyFeedback = {
+            id: Date.now() + Math.random(),
+            word: issue.word,
+            suggestion: issue.suggestion,
+            meaning: issue.meaning,
+            example: issue.example,
+            originalContext: originalText,
+            timestamp: new Date().toISOString(),
+            type: "vocabulary" as const,
+          };
+          notes.vocabulary.push(vocabularyFeedback);
+        });
+      }
+
+      // Save updated notes
+      localStorage.setItem("learningNotes", JSON.stringify(notes));
     } catch (error) {
-      console.error("Failed to save sentence:", error);
-      alert("문장 저장에 실패했습니다.");
+      console.error("Failed to save feedback:", error);
     }
   };
 
@@ -163,6 +227,21 @@ export default function FreeChatPage() {
       // Update user message with translated text if available
       const finalUserText = data.translatedMessage || currentInput;
 
+      // Analyze the message for errors if translation occurred
+      let analysis: AnalysisResult | undefined;
+      if (data.translatedMessage && currentInput !== finalUserText) {
+        analysis = await analyzeUserMessage(currentInput, finalUserText);
+
+        // Automatically save analysis results to learning notes
+        if (analysis.hasErrors) {
+          await saveFeedbackToLearningNotes(
+            analysis,
+            currentInput,
+            finalUserText
+          );
+        }
+      }
+
       const updatedUserMessage: Message = {
         id: tempUserMessageId,
         text: finalUserText,
@@ -172,6 +251,7 @@ export default function FreeChatPage() {
           data.translatedMessage && data.translatedMessage !== currentInput
             ? currentInput
             : undefined,
+        analysis: analysis,
       };
 
       // Add actual AI response
@@ -444,21 +524,105 @@ export default function FreeChatPage() {
                         </p>
                       </div>
 
-                      <div className="pt-2">
-                        <button
-                          onClick={() => saveSentenceToLearningNotes(message)}
-                          disabled={message.isSaved}
-                          className={`text-xs px-3 py-1 rounded transition-colors ${
-                            message.isSaved
-                              ? "bg-gray-600 text-gray-400 cursor-not-allowed"
-                              : "bg-emerald-800 hover:bg-emerald-900 text-white"
-                          }`}
-                        >
-                          {message.isSaved
-                            ? "✓ Saved"
-                            : "Save to Learning Notes"}
-                        </button>
-                      </div>
+                      {/* Analysis Results */}
+                      {message.analysis && (
+                        <div className="space-y-3">
+                          {message.analysis.hasErrors ? (
+                            <div className="bg-yellow-900/50 border border-yellow-600 rounded p-3">
+                              <p className="text-xs font-semibold text-yellow-300 mb-2">
+                                🔍 AI Analysis - Learning Opportunities Found
+                              </p>
+
+                              {/* Grammar Errors */}
+                              {message.analysis.grammarErrors.length > 0 && (
+                                <div className="mb-3">
+                                  <p className="text-xs font-semibold text-red-300 mb-1">
+                                    📝 Grammar (
+                                    {message.analysis.grammarErrors.length})
+                                  </p>
+                                  <div className="space-y-1">
+                                    {message.analysis.grammarErrors.map(
+                                      (error) => (
+                                        <div
+                                          key={error.id}
+                                          className="text-xs bg-red-900/30 border border-red-700 rounded p-2"
+                                        >
+                                          <p className="text-red-200">
+                                            <span className="font-medium">
+                                              Error:
+                                            </span>{" "}
+                                            {error.error}
+                                          </p>
+                                          <p className="text-green-200">
+                                            <span className="font-medium">
+                                              Fix:
+                                            </span>{" "}
+                                            {error.correction}
+                                          </p>
+                                          <p className="text-gray-300 mt-1">
+                                            {error.explanation}
+                                          </p>
+                                        </div>
+                                      )
+                                    )}
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* Vocabulary Issues */}
+                              {message.analysis.vocabularyIssues.length > 0 && (
+                                <div className="mb-3">
+                                  <p className="text-xs font-semibold text-blue-300 mb-1">
+                                    📚 Vocabulary (
+                                    {message.analysis.vocabularyIssues.length})
+                                  </p>
+                                  <div className="space-y-1">
+                                    {message.analysis.vocabularyIssues.map(
+                                      (issue) => (
+                                        <div
+                                          key={issue.id}
+                                          className="text-xs bg-blue-900/30 border border-blue-700 rounded p-2"
+                                        >
+                                          <p className="text-blue-200">
+                                            <span className="font-medium">
+                                              Word:
+                                            </span>{" "}
+                                            {issue.word} → {issue.suggestion}
+                                          </p>
+                                          <p className="text-gray-300">
+                                            <span className="font-medium">
+                                              Meaning:
+                                            </span>{" "}
+                                            {issue.meaning}
+                                          </p>
+                                          <p className="text-gray-300 text-xs mt-1">
+                                            <span className="font-medium">
+                                              Example:
+                                            </span>{" "}
+                                            {issue.example}
+                                          </p>
+                                        </div>
+                                      )
+                                    )}
+                                  </div>
+                                </div>
+                              )}
+
+                              <p className="text-xs text-green-300 mt-2">
+                                ✅ Feedback automatically saved to Learning
+                                Notes!
+                              </p>
+                            </div>
+                          ) : (
+                            <div className="bg-green-900/50 border border-green-600 rounded p-3">
+                              <p className="text-xs text-green-300">
+                                ✅ Great job! No major errors detected in your
+                                translation.
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}

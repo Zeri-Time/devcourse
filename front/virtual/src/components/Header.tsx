@@ -155,6 +155,12 @@ export default function Header() {
               Chat
             </Link>
             <Link
+              href="/find"
+              className="text-gray-200 hover:text-emerald-400 transition-colors"
+            >
+              Find
+            </Link>
+            <Link
               href="/learning-notes"
               className="text-gray-200 hover:text-emerald-400 transition-colors"
             >
@@ -401,6 +407,12 @@ export default function Header() {
                 className="text-gray-200 hover:text-emerald-400 transition-colors py-2"
               >
                 Chat
+              </Link>
+              <Link
+                href="/find"
+                className="text-gray-200 hover:text-emerald-400 transition-colors py-2"
+              >
+                Find
               </Link>
               <Link
                 href="/learning-notes"

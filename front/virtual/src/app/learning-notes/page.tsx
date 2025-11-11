@@ -2,379 +2,487 @@
 
 import { useEffect, useState } from "react";
 
-interface VocabularyItem {
-  id: number;
-  korean: string;
-  english: string;
-  dateAdded: Date;
-  context?: string;
-  mastered: boolean;
+interface GrammarFeedback {
+  id: string;
+  error: string;
+  correction: string;
+  explanation: string;
+  originalSentence: string;
+  timestamp: string;
+  tag: "grammar";
 }
 
-interface SentenceItem {
-  id: number;
-  originalText: string;
-  translatedText: string;
+interface VocabularyFeedback {
+  id: string;
+  word: string;
+  suggestion: string;
+  meaning: string;
+  example: string;
+  originalSentence: string;
+  correctedSentence: string;
   timestamp: string;
-  type: "sentence";
+  tag: "vocabulary";
 }
+
+type FeedbackItem = GrammarFeedback | VocabularyFeedback;
 
 export default function LearningNotesPage() {
-  const [activeTab, setActiveTab] = useState<"words" | "sentences">("words");
-  const [vocabulary, setVocabulary] = useState<VocabularyItem[]>([
-    {
-      id: 1,
-      korean: "도서관",
-      english: "library",
-      dateAdded: new Date("2024-10-25"),
-      context: "I want to go to the library to study",
-      mastered: false,
-    },
-    {
-      id: 2,
-      korean: "감사합니다",
-      english: "thank you",
-      dateAdded: new Date("2024-10-26"),
-      context: "Thank you for your help",
-      mastered: true,
-    },
-    {
-      id: 3,
-      korean: "학교",
-      english: "school",
-      dateAdded: new Date("2024-10-27"),
-      context: "I go to school every day",
-      mastered: false,
-    },
-  ]);
-
-  const [sentences, setSentences] = useState<SentenceItem[]>([]);
-  const [filterMastered, setFilterMastered] = useState<
-    "all" | "learning" | "mastered"
-  >("all");
+  const [activeTab, setActiveTab] = useState<"grammar" | "vocabulary">(
+    "grammar"
+  );
+  const [feedbackItems, setFeedbackItems] = useState<FeedbackItem[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
 
-  // Load sentences from localStorage
+  // Toggle expanded state for items
+  const toggleExpanded = (itemId: string) => {
+    const newExpanded = new Set(expandedItems);
+    if (newExpanded.has(itemId)) {
+      newExpanded.delete(itemId);
+    } else {
+      newExpanded.add(itemId);
+    }
+    setExpandedItems(newExpanded);
+  };
+
+  // Load feedback from localStorage
   useEffect(() => {
-    const loadLearningNotes = () => {
+    const loadFeedback = () => {
       try {
         const existingNotes = localStorage.getItem("learningNotes");
+        let notes: any = {};
+
         if (existingNotes) {
-          const notes = JSON.parse(existingNotes);
-          if (notes.sentences) {
-            setSentences(notes.sentences);
-          }
+          notes = JSON.parse(existingNotes);
         }
+
+        // Initial vocabulary data
+        const initialVocabulary = [
+          {
+            id: "vocab_1",
+            word: "점심",
+            suggestion: "lunch",
+            meaning: "The midday meal",
+            example: "I had lunch at 12 PM.",
+            originalSentence: "Yesterday I had 점심. It was really delicious!",
+            correctedSentence:
+              "Yesterday I had lunch. It was really delicious!",
+            timestamp: "2024-11-05T09:30:00.000Z",
+            tag: "vocabulary",
+          },
+          {
+            id: "vocab_2",
+            word: "숙제",
+            suggestion: "homework",
+            meaning: "School work assigned to be done outside the classroom",
+            example: "I need to finish my homework before dinner.",
+            originalSentence:
+              "I have too much 숙제 today. Should I do it at the library?",
+            correctedSentence:
+              "I have too much homework today. Should I do it at the library?",
+            timestamp: "2024-11-05T08:15:00.000Z",
+            tag: "vocabulary",
+          },
+          {
+            id: "vocab_3",
+            word: "친구",
+            suggestion: "friend",
+            meaning: "A person you know well and like",
+            example: "My friend helped me with my English homework.",
+            originalSentence:
+              "I met a new 친구. They are a really kind person.",
+            correctedSentence:
+              "I met a new friend. They are a really kind person.",
+            timestamp: "2024-11-04T16:45:00.000Z",
+            tag: "vocabulary",
+          },
+          {
+            id: "vocab_4",
+            word: "학교",
+            suggestion: "school",
+            meaning: "An educational institution",
+            example: "I go to school every day except weekends.",
+            originalSentence:
+              "I have to go to 학교 early tomorrow. There's an exam.",
+            correctedSentence:
+              "I have to go to school early tomorrow. There's an exam.",
+            timestamp: "2024-11-04T14:20:00.000Z",
+            tag: "vocabulary",
+          },
+          {
+            id: "vocab_5",
+            word: "커피",
+            suggestion: "coffee",
+            meaning: "A hot drink made from coffee beans",
+            example: "I drink coffee every morning.",
+            originalSentence:
+              "I feel good when I drink a cup of 커피 in the morning.",
+            correctedSentence:
+              "I feel good when I drink a cup of coffee in the morning.",
+            timestamp: "2024-11-04T12:10:00.000Z",
+            tag: "vocabulary",
+          },
+          {
+            id: "vocab_6",
+            word: "영화",
+            suggestion: "movie",
+            meaning: "A film shown in a cinema or on television",
+            example: "We watched a movie last night.",
+            originalSentence: "I'm planning to go see a new 영화 this weekend.",
+            correctedSentence:
+              "I'm planning to go see a new movie this weekend.",
+            timestamp: "2024-11-04T10:30:00.000Z",
+            tag: "vocabulary",
+          },
+          {
+            id: "vocab_7",
+            word: "음식",
+            suggestion: "food",
+            meaning: "Something that people eat",
+            example: "Korean food is very delicious.",
+            originalSentence: "This 음식 is really spicy but delicious!",
+            correctedSentence: "This food is really spicy but delicious!",
+            timestamp: "2024-11-03T18:45:00.000Z",
+            tag: "vocabulary",
+          },
+          {
+            id: "vocab_8",
+            word: "책",
+            suggestion: "book",
+            meaning: "A set of written pages bound together",
+            example: "I'm reading an interesting book.",
+            originalSentence: "I borrowed a new 책 from the library.",
+            correctedSentence: "I borrowed a new book from the library.",
+            timestamp: "2024-11-03T15:20:00.000Z",
+            tag: "vocabulary",
+          },
+        ];
+
+        // Add initial vocabulary if not exists, or merge with existing
+        if (!notes.vocabulary) {
+          notes.vocabulary = initialVocabulary;
+        } else {
+          // Check if initial words already exist, add if not
+          const existingIds = notes.vocabulary.map((item: any) => item.id);
+          initialVocabulary.forEach((vocab) => {
+            if (!existingIds.includes(vocab.id)) {
+              notes.vocabulary.push(vocab);
+            }
+          });
+        }
+
+        // Ensure grammar data exists
+        if (!notes.grammar) {
+          notes.grammar = [
+            {
+              id: "grammar_1",
+              error: "my name Zeri",
+              correction: "my name is Zeri",
+              explanation:
+                "Missing 'is' verb. In English, we need the be verb: 'My name is [name]'.",
+              originalSentence: "Hello, my name Zeri. Nice to meet you!",
+              timestamp: "2024-11-05T10:00:00.000Z",
+              tag: "grammar",
+            },
+          ];
+        }
+
+        // Save updated notes to localStorage
+        localStorage.setItem("learningNotes", JSON.stringify(notes));
+
+        const allFeedback: FeedbackItem[] = [];
+
+        // Load grammar feedback
+        if (notes.grammar) {
+          allFeedback.push(
+            ...notes.grammar.map((item: any) => ({
+              ...item,
+              tag: "grammar" as const,
+            }))
+          );
+        }
+
+        // Load vocabulary feedback
+        if (notes.vocabulary) {
+          allFeedback.push(
+            ...notes.vocabulary.map((item: any) => ({
+              ...item,
+              tag: "vocabulary" as const,
+            }))
+          );
+        }
+
+        // Sort by timestamp (newest first)
+        allFeedback.sort(
+          (a, b) =>
+            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+        );
+
+        setFeedbackItems(allFeedback);
       } catch (error) {
         console.error("Failed to load learning notes:", error);
       }
     };
 
-    loadLearningNotes();
+    loadFeedback();
 
     // Listen for storage changes
     const handleStorageChange = () => {
-      loadLearningNotes();
+      loadFeedback();
     };
 
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
-  const toggleMastered = (id: number) => {
-    setVocabulary((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, mastered: !item.mastered } : item
-      )
+  // Filter feedback items
+  const grammarFeedback = feedbackItems.filter(
+    (item): item is GrammarFeedback => item.tag === "grammar"
+  );
+
+  const vocabularyFeedback = feedbackItems.filter(
+    (item): item is VocabularyFeedback => item.tag === "vocabulary"
+  );
+
+  const filteredGrammarFeedback = grammarFeedback.filter((item) => {
+    return (
+      item.error.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.correction.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.explanation.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.originalSentence.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  };
-
-  const filteredVocabulary = vocabulary.filter((item) => {
-    const matchesFilter =
-      filterMastered === "all" ||
-      (filterMastered === "learning" && !item.mastered) ||
-      (filterMastered === "mastered" && item.mastered);
-
-    const matchesSearch =
-      item.korean.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.english.toLowerCase().includes(searchTerm.toLowerCase());
-
-    return matchesFilter && matchesSearch;
   });
 
-  const filteredSentences = sentences.filter((item) => {
-    const matchesSearch =
-      item.originalText.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.translatedText.toLowerCase().includes(searchTerm.toLowerCase());
-
-    return matchesSearch;
+  const filteredVocabularyFeedback = vocabularyFeedback.filter((item) => {
+    return (
+      item.word.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.suggestion.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.meaning.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.example.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.originalSentence.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.correctedSentence.toLowerCase().includes(searchTerm.toLowerCase())
+    );
   });
-
-  const stats = {
-    total: vocabulary.length,
-    mastered: vocabulary.filter((item) => item.mastered).length,
-    learning: vocabulary.filter((item) => !item.mastered).length,
-    sentences: sentences.length,
-  };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <div className="flex justify-between items-start mb-4">
-          <div>
-            <h1 className="text-3xl font-bold mb-4 text-white">
-              Learning Notes
-            </h1>
-            <p className="text-gray-300">
-              Track your vocabulary progress and review words you've learned
-              through chat
-            </p>
-          </div>
-          <div className="flex flex-col gap-2">
-            <a
-              href="/learning-notes/memory-palace"
-              className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 font-semibold text-center shadow-lg transform hover:scale-105"
-            >
-              Memory Palace
-            </a>
-            <div className="text-xs text-gray-400 text-center">
-              카드 뒤집기 게임!
-            </div>
-          </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      {/* Header */}
+      <header className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <h1 className="text-3xl font-bold text-gray-900">학습 노트</h1>
+          <p className="mt-2 text-gray-600">
+            AI와의 대화에서 학습한 문법과 어휘를 확인하세요
+          </p>
         </div>
-      </div>
+      </header>
 
-      {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <div className="bg-gray-800 border border-gray-600 p-4 rounded-lg text-center">
-          <div className="text-2xl font-bold text-blue-400">{stats.total}</div>
-          <div className="text-sm text-gray-300">Total Words</div>
-        </div>
-        <div className="bg-gray-800 border border-gray-600 p-4 rounded-lg text-center">
-          <div className="text-2xl font-bold text-green-400">
-            {stats.mastered}
-          </div>
-          <div className="text-sm text-gray-300">Mastered</div>
-        </div>
-        <div className="bg-gray-800 border border-gray-600 p-4 rounded-lg text-center">
-          <div className="text-2xl font-bold text-yellow-400">
-            {stats.learning}
-          </div>
-          <div className="text-sm text-gray-300">Learning</div>
-        </div>
-        <div className="bg-gray-800 border border-gray-600 p-4 rounded-lg text-center">
-          <div className="text-2xl font-bold text-purple-400">
-            {stats.sentences}
-          </div>
-          <div className="text-sm text-gray-300">Saved Sentences</div>
-        </div>
-      </div>
-
-      {/* Tabs */}
-      <div className="mb-6">
-        <div className="flex space-x-1 bg-gray-800 p-1 rounded-lg">
-          <button
-            onClick={() => setActiveTab("words")}
-            className={`flex-1 py-2 px-4 rounded-md transition-colors ${
-              activeTab === "words"
-                ? "bg-emerald-600 text-white"
-                : "text-gray-300 hover:text-white hover:bg-gray-700"
-            }`}
-          >
-            Words ({stats.total})
-          </button>
-          <button
-            onClick={() => setActiveTab("sentences")}
-            className={`flex-1 py-2 px-4 rounded-md transition-colors ${
-              activeTab === "sentences"
-                ? "bg-emerald-600 text-white"
-                : "text-gray-300 hover:text-white hover:bg-gray-700"
-            }`}
-          >
-            Sentences ({stats.sentences})
-          </button>
-        </div>
-      </div>
-
-      {/* Filters */}
-      <div className="bg-gray-800 border border-gray-600 p-4 rounded-lg shadow-sm mb-6">
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="flex-1">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Search and Tabs */}
+        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+          <div className="mb-6">
             <input
               type="text"
-              placeholder={
-                activeTab === "words"
-                  ? "Search vocabulary..."
-                  : "Search sentences..."
-              }
+              placeholder="학습 내용을 검색하세요..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-600 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 placeholder-gray-400"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
-          {activeTab === "words" && (
-            <div className="flex gap-2">
-              <button
-                onClick={() => setFilterMastered("all")}
-                className={`px-4 py-2 rounded-lg transition-colors ${
-                  filterMastered === "all"
-                    ? "bg-emerald-600 text-white"
-                    : "bg-gray-700 text-gray-200 hover:bg-gray-600"
-                }`}
-              >
-                All
-              </button>
-              <button
-                onClick={() => setFilterMastered("learning")}
-                className={`px-4 py-2 rounded-lg transition-colors ${
-                  filterMastered === "learning"
-                    ? "bg-amber-600 text-white"
-                    : "bg-gray-700 text-gray-200 hover:bg-gray-600"
-                }`}
-              >
-                Learning
-              </button>
-              <button
-                onClick={() => setFilterMastered("mastered")}
-                className={`px-4 py-2 rounded-lg transition-colors ${
-                  filterMastered === "mastered"
-                    ? "bg-green-600 text-white"
-                    : "bg-gray-700 text-gray-200 hover:bg-gray-600"
-                }`}
-              >
-                Mastered
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
 
-      {/* Tab Content */}
-      <div className="space-y-4">
-        {activeTab === "words" ? (
-          // Words Tab Content
-          <>
-            {filteredVocabulary.length === 0 ? (
-              <div className="text-center py-8 text-gray-400">
-                {searchTerm
-                  ? "No vocabulary found matching your search."
-                  : "No vocabulary words yet. Start chatting to add some!"}
-              </div>
-            ) : (
-              filteredVocabulary.map((item) => (
-                <div
-                  key={item.id}
-                  className="bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-600"
-                >
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <span className="text-lg font-medium text-white">
-                          {item.korean}
-                        </span>
-                        <span className="text-gray-400">→</span>
-                        <span className="text-lg font-medium text-emerald-400">
-                          {item.english}
-                        </span>
+          <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
+            <button
+              onClick={() => setActiveTab("grammar")}
+              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+                activeTab === "grammar"
+                  ? "bg-white text-blue-600 shadow-sm"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              문법 피드백 ({filteredGrammarFeedback.length})
+            </button>
+            <button
+              onClick={() => setActiveTab("vocabulary")}
+              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
+                activeTab === "vocabulary"
+                  ? "bg-white text-blue-600 shadow-sm"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              단어장 ({filteredVocabularyFeedback.length})
+            </button>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="space-y-4">
+          {activeTab === "grammar" ? (
+            <>
+              {filteredGrammarFeedback.length === 0 ? (
+                <div className="text-center py-12 bg-white rounded-lg shadow-sm">
+                  <p className="text-gray-500">
+                    {searchTerm
+                      ? "검색 조건에 맞는 문법 피드백이 없습니다."
+                      : "아직 문법 피드백이 없습니다. AI와 대화하며 학습해보세요!"}
+                  </p>
+                </div>
+              ) : (
+                filteredGrammarFeedback.map((item) => (
+                  <div
+                    key={item.id}
+                    className="bg-white rounded-lg shadow-sm p-6"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center mb-3">
+                          <span className="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">
+                            오류
+                          </span>
+                          <span className="ml-2 text-sm text-gray-500">
+                            {new Date(item.timestamp).toLocaleDateString(
+                              "ko-KR"
+                            )}
+                          </span>
+                        </div>
+                        <div className="space-y-3">
+                          <div>
+                            <p className="text-sm text-gray-600 mb-1">
+                              원본 문장:
+                            </p>
+                            <p className="text-gray-900 bg-gray-50 p-3 rounded">
+                              {item.originalSentence}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-red-600 mb-1">오류:</p>
+                            <p className="text-red-800 line-through">
+                              {item.error}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-green-600 mb-1">수정:</p>
+                            <p className="text-green-800 font-medium">
+                              {item.correction}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-blue-600 mb-1">설명:</p>
+                            <p className="text-blue-800">{item.explanation}</p>
+                          </div>
+                        </div>
                       </div>
-                      {item.context && (
-                        <div className="text-gray-300 text-sm mb-2">
-                          <span className="font-medium">Used in:</span> "
-                          {item.context}"
+                    </div>
+                  </div>
+                ))
+              )}
+            </>
+          ) : (
+            <>
+              {filteredVocabularyFeedback.length === 0 ? (
+                <div className="text-center py-12 bg-white rounded-lg shadow-sm">
+                  <p className="text-gray-500">
+                    {searchTerm
+                      ? "검색 조건에 맞는 단어가 없습니다."
+                      : "아직 저장된 단어가 없습니다. AI와 대화하며 새로운 단어를 학습해보세요!"}
+                  </p>
+                </div>
+              ) : (
+                filteredVocabularyFeedback.map((item) => (
+                  <div
+                    key={item.id}
+                    className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
+                  >
+                    <div className="p-6">
+                      {/* Always visible content */}
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          <div className="flex items-center mb-2">
+                            <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
+                              단어
+                            </span>
+                            <span className="ml-2 text-sm text-gray-500">
+                              {new Date(item.timestamp).toLocaleDateString(
+                                "ko-KR"
+                              )}
+                            </span>
+                          </div>
+                          <div className="space-y-3">
+                            <div className="flex items-center space-x-4">
+                              <div>
+                                <span className="text-lg font-semibold text-gray-900">
+                                  {item.word}
+                                </span>
+                                <span className="text-gray-400 mx-2">→</span>
+                                <span className="text-lg font-medium text-blue-600">
+                                  {item.suggestion}
+                                </span>
+                              </div>
+                            </div>
+                            <div>
+                              <p className="text-gray-700">{item.meaning}</p>
+                            </div>
+                            <div>
+                              <p className="text-sm text-gray-600 mb-1">
+                                예문:
+                              </p>
+                              <p className="text-gray-800 italic">
+                                "{item.example}"
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Toggle button */}
+                      <button
+                        onClick={() => toggleExpanded(item.id)}
+                        className="flex items-center text-sm text-blue-600 hover:text-blue-800 font-medium"
+                      >
+                        <span>원본/수정 문장 보기</span>
+                        <svg
+                          className={`ml-1 w-4 h-4 transition-transform ${
+                            expandedItems.has(item.id) ? "rotate-180" : ""
+                          }`}
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
+                      </button>
+
+                      {/* Collapsible content */}
+                      {expandedItems.has(item.id) && (
+                        <div className="mt-4 pt-4 border-t border-gray-100 space-y-3">
+                          <div>
+                            <p className="text-sm text-gray-600 mb-2">
+                              한국어 원본:
+                            </p>
+                            <p className="text-gray-900 bg-yellow-50 p-3 rounded border-l-4 border-yellow-400">
+                              {item.originalSentence}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-600 mb-2">
+                              영어 번역:
+                            </p>
+                            <p className="text-gray-900 bg-green-50 p-3 rounded border-l-4 border-green-400">
+                              {item.correctedSentence}
+                            </p>
+                          </div>
                         </div>
                       )}
-                      <div className="text-xs text-gray-400">
-                        Added on {item.dateAdded.toLocaleDateString()}
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          item.mastered
-                            ? "bg-green-600 text-white"
-                            : "bg-amber-600 text-white"
-                        }`}
-                      >
-                        {item.mastered ? "Mastered" : "Learning"}
-                      </span>
-                      <button
-                        onClick={() => toggleMastered(item.id)}
-                        className="text-sm text-emerald-400 hover:text-emerald-300 transition-colors"
-                      >
-                        {item.mastered
-                          ? "Mark as Learning"
-                          : "Mark as Mastered"}
-                      </button>
                     </div>
                   </div>
-                </div>
-              ))
-            )}
-          </>
-        ) : (
-          // Sentences Tab Content
-          <>
-            {filteredSentences.length === 0 ? (
-              <div className="text-center py-8 text-gray-400">
-                {searchTerm
-                  ? "No sentences found matching your search."
-                  : "No saved sentences yet. Save sentences from your chat conversations!"}
-              </div>
-            ) : (
-              filteredSentences.map((item) => (
-                <div
-                  key={item.id}
-                  className="bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-600"
-                >
-                  <div className="space-y-3">
-                    <div>
-                      <p className="text-sm font-semibold text-emerald-400 mb-1">
-                        Original (Korean):
-                      </p>
-                      <p className="text-gray-200 bg-gray-700 p-3 rounded border-l-4 border-emerald-500">
-                        {item.originalText}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-blue-400 mb-1">
-                        Translation (English):
-                      </p>
-                      <p className="text-gray-200 bg-gray-700 p-3 rounded border-l-4 border-blue-500">
-                        {item.translatedText}
-                      </p>
-                    </div>
-                    <div className="flex justify-between items-center text-xs text-gray-400">
-                      <span>
-                        Saved on {new Date(item.timestamp).toLocaleDateString()}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))
-            )}
-          </>
-        )}
-      </div>
-
-      {/* Help Text */}
-      <div className="mt-8 bg-gray-800 border border-gray-600 p-4 rounded-lg">
-        <h3 className="font-semibold text-emerald-400 mb-2">How it works</h3>
-        <ul className="text-sm text-gray-300 space-y-1">
-          <li>
-            • <strong>Words:</strong> When you type Korean words in chat,
-            they're automatically translated and saved here
-          </li>
-          <li>
-            • <strong>Sentences:</strong> Use the dropdown in chat to save
-            original and translated sentence pairs
-          </li>
-          <li>
-            • Review your vocabulary and sentences regularly to improve
-            retention
-          </li>
-          <li>• Mark words as "Mastered" when you're confident using them</li>
-          <li>• Use the search and filter options to find specific content</li>
-        </ul>
+                ))
+              )}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -114,6 +114,69 @@ Please respond naturally as an English tutor would.`,
     }
   }
 
+  async analyzeTranslation(prompt: string): Promise<string> {
+    try {
+      const response = await fetch(`${this.apiUrl}?key=${this.apiKey}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              role: "user",
+              parts: [{ text: prompt }],
+            },
+          ],
+          generationConfig: {
+            temperature: 0.1, // Very low for consistent analysis
+            topK: 5,
+            topP: 0.9,
+            maxOutputTokens: 2048,
+          },
+          safetySettings: [
+            {
+              category: "HARM_CATEGORY_HARASSMENT",
+              threshold: "BLOCK_NONE",
+            },
+            {
+              category: "HARM_CATEGORY_HATE_SPEECH",
+              threshold: "BLOCK_NONE",
+            },
+            {
+              category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+              threshold: "BLOCK_NONE",
+            },
+            {
+              category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+              threshold: "BLOCK_NONE",
+            },
+          ],
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          `Gemini API Error: ${response.status} ${
+            response.statusText
+          } - ${JSON.stringify(errorData)}`
+        );
+      }
+
+      const data: GeminiResponse = await response.json();
+
+      if (!data.candidates || data.candidates.length === 0) {
+        throw new Error("No response generated from Gemini API");
+      }
+
+      return data.candidates[0].content.parts[0].text.trim();
+    } catch (error) {
+      console.error("Gemini Analysis Error:", error);
+      throw error;
+    }
+  }
+
   async generateFeedback(message: string): Promise<{
     grammar: string;
     vocabulary: string;
